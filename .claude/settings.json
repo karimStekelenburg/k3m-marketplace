@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": []
+  },
+  "enabledPlugins": [
+    "skill-creator@claude-plugins-official",
+    "plugin-dev@claude-plugins-official"
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "k3m-marketplace",
+  "description": "A curated collection of Claude Code plugins",
+  "owner": {
+    "name": "k3m.sh",
+    "email": "me@k3m.sh"
+  },
+  "metadata": {
+    "version": "0.1.0",
+    "pluginRoot": "./plugins"
+  },
+  "plugins": [
+    {
+      "name": "core-devtools",
+      "description": "A starter plugin to demonstrate marketplace structure",
+      "version": "0.1.0",
+      "author": {
+        "name": "k3m.sh",
+        "email": "me@k3m.sh"
+      },
+      "source": "./plugins/core-devtools",
+      "category": "development"
+    }
+  ]
+}

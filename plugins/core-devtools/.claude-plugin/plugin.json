@@ -1,0 +1,9 @@
+{
+  "name": "core-devtools",
+  "version": "0.1.0",
+  "description": "A starter plugin to demonstrate marketplace structure",
+  "author": {
+    "name": "k3m.sh",
+    "email": "me@k3m.sh"
+  }
+}
