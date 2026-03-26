@@ -1,0 +1,155 @@
+name: Project Board Sync
+
+on:
+  pull_request:
+    types: [opened, closed]
+
+jobs:
+  # PR opened → move linked issue to Review
+  move-to-review:
+    if: github.event.action == 'opened'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+      pull-requests: read
+
+    steps:
+      - name: Move linked issue to Review on project board
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.PROJECT_PAT }}
+          script: |
+            const body = context.payload.pull_request.body || '';
+            const prNumber = context.payload.pull_request.number;
+
+            const refs = body.match(/(close[sd]?|fix(es|ed)?|resolve[sd]?|references?)\s+#(\d+)/gi) || [];
+            const issueNumbers = refs.map(r => parseInt(r.match(/#(\d+)/)[1]));
+
+            if (issueNumbers.length === 0) {
+              console.log('No linked issues in PR body');
+              return;
+            }
+
+            // TODO: Update these IDs for your project
+            const PROJECT_ID = 'PVT_kwHOARi4As4BSz6Z';
+            const STATUS_FIELD_ID = 'PVTSSF_lAHOARi4As4BSz6ZzhAPIRw';
+            const REVIEW_OPTION_ID = '8c269809';
+
+            for (const issueNumber of issueNumbers) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issueNumber,
+                body: `PR #${prNumber} opened for this milestone. Moving to **Review**.`
+              });
+
+              try {
+                await github.rest.issues.removeLabel({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issueNumber,
+                  name: 'implementing'
+                });
+              } catch (e) { /* ok */ }
+
+              const findItem = `query($projectId: ID!) {
+                node(id: $projectId) {
+                  ... on ProjectV2 {
+                    items(first: 100) {
+                      nodes {
+                        id
+                        content { ... on Issue { number } }
+                      }
+                    }
+                  }
+                }
+              }`;
+              const proj = await github.graphql(findItem, { projectId: PROJECT_ID });
+              const item = proj.node.items.nodes.find(n => n.content?.number === issueNumber);
+
+              if (item) {
+                const mutation = `mutation($projectId: ID!, $itemId: ID!, $fieldId: ID!, $value: String!) {
+                  updateProjectV2ItemFieldValue(input: {
+                    projectId: $projectId
+                    itemId: $itemId
+                    fieldId: $fieldId
+                    value: { singleSelectOptionId: $value }
+                  }) { projectV2Item { id } }
+                }`;
+                await github.graphql(mutation, {
+                  projectId: PROJECT_ID,
+                  itemId: item.id,
+                  fieldId: STATUS_FIELD_ID,
+                  value: REVIEW_OPTION_ID
+                });
+                console.log(`Moved #${issueNumber} to Review on project board`);
+              }
+            }
+
+  # PR merged → close issue, move to Done
+  move-to-done:
+    if: github.event.action == 'closed' && github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+      pull-requests: read
+
+    steps:
+      - name: Close linked issues and move to Done
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.PROJECT_PAT }}
+          script: |
+            const body = context.payload.pull_request.body || '';
+            const refs = body.match(/(close[sd]?|fix(es|ed)?|resolve[sd]?)\s+#(\d+)/gi) || [];
+            const issueNumbers = refs.map(r => parseInt(r.match(/#(\d+)/)[1]));
+
+            // TODO: Update these IDs for your project
+            const PROJECT_ID = 'PVT_kwHOARi4As4BSz6Z';
+            const STATUS_FIELD_ID = 'PVTSSF_lAHOARi4As4BSz6ZzhAPIRw';
+            const DONE_OPTION_ID = '98236657';
+
+            for (const issueNumber of issueNumbers) {
+              await github.rest.issues.update({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issueNumber,
+                state: 'closed',
+                state_reason: 'completed'
+              });
+
+              const findItem = `query($projectId: ID!) {
+                node(id: $projectId) {
+                  ... on ProjectV2 {
+                    items(first: 100) {
+                      nodes {
+                        id
+                        content { ... on Issue { number } }
+                      }
+                    }
+                  }
+                }
+              }`;
+              const proj = await github.graphql(findItem, { projectId: PROJECT_ID });
+              const item = proj.node.items.nodes.find(n => n.content?.number === issueNumber);
+
+              if (item) {
+                const mutation = `mutation($projectId: ID!, $itemId: ID!, $fieldId: ID!, $value: String!) {
+                  updateProjectV2ItemFieldValue(input: {
+                    projectId: $projectId
+                    itemId: $itemId
+                    fieldId: $fieldId
+                    value: { singleSelectOptionId: $value }
+                  }) { projectV2Item { id } }
+                }`;
+                await github.graphql(mutation, {
+                  projectId: PROJECT_ID,
+                  itemId: item.id,
+                  fieldId: STATUS_FIELD_ID,
+                  value: DONE_OPTION_ID
+                });
+                console.log(`Moved #${issueNumber} to Done`);
+              }
+            }

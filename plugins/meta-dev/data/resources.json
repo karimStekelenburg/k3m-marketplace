@@ -1,0 +1,141 @@
+{
+  "$schema": "./resources.schema.json",
+  "version": "0.1.0",
+  "last_updated": "2026-03-26",
+  "categories": {
+    "official-docs": "Official Anthropic documentation",
+    "github": "Source code, issues, PRs, changelogs",
+    "social": "Twitter/X accounts for news and tips",
+    "community": "Community resources, blogs, tutorials"
+  },
+  "resources": [
+    {
+      "id": "docs-claude-code",
+      "url": "https://docs.anthropic.com/en/docs/claude-code/overview",
+      "name": "Claude Code Overview",
+      "category": "official-docs",
+      "type": "sitemap-root",
+      "notes": "Entry point — crawl child pages for settings, hooks, MCP, plugins, etc.",
+      "status": "active"
+    },
+    {
+      "id": "docs-claude-code-plugins",
+      "url": "https://docs.anthropic.com/en/docs/claude-code/plugins",
+      "name": "Claude Code Plugins Docs",
+      "category": "official-docs",
+      "type": "page",
+      "status": "active"
+    },
+    {
+      "id": "docs-claude-code-hooks",
+      "url": "https://docs.anthropic.com/en/docs/claude-code/hooks",
+      "name": "Claude Code Hooks Docs",
+      "category": "official-docs",
+      "type": "page",
+      "status": "active"
+    },
+    {
+      "id": "docs-claude-code-mcp",
+      "url": "https://docs.anthropic.com/en/docs/claude-code/mcp",
+      "name": "Claude Code MCP Docs",
+      "category": "official-docs",
+      "type": "page",
+      "status": "active"
+    },
+    {
+      "id": "docs-claude-code-settings",
+      "url": "https://docs.anthropic.com/en/docs/claude-code/settings",
+      "name": "Claude Code Settings Docs",
+      "category": "official-docs",
+      "type": "page",
+      "status": "active"
+    },
+    {
+      "id": "docs-claude-code-cli",
+      "url": "https://docs.anthropic.com/en/docs/claude-code/cli-reference",
+      "name": "Claude Code CLI Reference",
+      "category": "official-docs",
+      "type": "page",
+      "status": "active"
+    },
+    {
+      "id": "docs-claude-code-memory",
+      "url": "https://docs.anthropic.com/en/docs/claude-code/memory",
+      "name": "Claude Code Memory & CLAUDE.md",
+      "category": "official-docs",
+      "type": "page",
+      "status": "active"
+    },
+    {
+      "id": "github-claude-code",
+      "url": "https://github.com/anthropics/claude-code",
+      "name": "Claude Code GitHub Repository",
+      "category": "github",
+      "type": "repo",
+      "notes": "Main repo — check releases, README, plugin examples",
+      "status": "active"
+    },
+    {
+      "id": "github-claude-code-releases",
+      "url": "https://github.com/anthropics/claude-code/releases",
+      "name": "Claude Code Releases / Changelog",
+      "category": "github",
+      "type": "releases",
+      "notes": "Primary source for new features and breaking changes",
+      "status": "active"
+    },
+    {
+      "id": "github-claude-code-plugins-dir",
+      "url": "https://github.com/anthropics/claude-code/tree/main/plugins",
+      "name": "Official Plugin Examples",
+      "category": "github",
+      "type": "directory",
+      "notes": "Reference implementations of plugins by Anthropic",
+      "status": "active"
+    },
+    {
+      "id": "twitter-alexalbert",
+      "url": "https://x.com/alexalbert__",
+      "name": "Alex Albert (Anthropic)",
+      "category": "social",
+      "type": "twitter",
+      "notes": "Head of Claude relations, often announces new features",
+      "status": "active"
+    },
+    {
+      "id": "twitter-anthropic",
+      "url": "https://x.com/AnthropicAI",
+      "name": "Anthropic Official",
+      "category": "social",
+      "type": "twitter",
+      "status": "active"
+    },
+    {
+      "id": "twitter-karpathy",
+      "url": "https://x.com/karpathy",
+      "name": "Andrej Karpathy",
+      "category": "social",
+      "type": "twitter",
+      "notes": "Agent architecture insights and AI coding techniques",
+      "status": "active"
+    },
+    {
+      "id": "twitter-amanrsanger",
+      "url": "https://x.com/amanrsanger",
+      "name": "Aman Sanger (Anthropic/Cursor)",
+      "category": "social",
+      "type": "twitter",
+      "notes": "AI coding tooling insights",
+      "status": "active"
+    },
+    {
+      "id": "docs-anthropic-changelog",
+      "url": "https://docs.anthropic.com/en/docs/about-claude/models",
+      "name": "Anthropic Models Reference",
+      "category": "official-docs",
+      "type": "page",
+      "notes": "Model IDs, context windows, capabilities",
+      "status": "active"
+    }
+  ]
+}

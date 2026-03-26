@@ -1,0 +1,12 @@
+{
+  "name": "plugin-dev",
+  "description": "Plugin development toolkit — scaffolding, validation, skill review, and best-practice guidance for building Claude Code plugins",
+  "author": {
+    "name": "k3m.sh",
+    "email": "me@k3m.sh",
+    "upstream": {
+      "name": "Anthropic",
+      "repo": "https://github.com/anthropics/claude-code/tree/main/plugins/plugin-dev"
+    }
+  }
+}

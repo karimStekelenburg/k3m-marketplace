@@ -1,0 +1,9 @@
+{
+  "name": "cycles",
+  "version": "0.1.0",
+  "description": "Full spec implementation cycles with filesystem and GitHub backends. Orchestrates spec → plan → track → implement → review → test → verify → retro.",
+  "author": {
+    "name": "k3m.sh",
+    "email": "me@k3m.sh"
+  }
+}

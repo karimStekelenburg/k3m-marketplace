@@ -1,0 +1,9 @@
+{
+  "name": "rup-lifecycle",
+  "version": "0.1.0",
+  "description": "Rational Unified Process lifecycle management — state machine, artifact tracking, and autonomous orchestration for iterative software development",
+  "author": {
+    "name": "k3m.sh",
+    "email": "me@k3m.sh"
+  }
+}

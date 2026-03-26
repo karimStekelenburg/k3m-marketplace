@@ -1,0 +1,103 @@
+name: Claude Cycle — Auto Implementation
+
+on:
+  # Trigger when "/cycle" label is added to an issue
+  issues:
+    types: [labeled]
+
+  # Manual trigger for testing
+  workflow_dispatch:
+    inputs:
+      issue_number:
+        description: 'Issue number to run /cycle on'
+        required: true
+        type: number
+
+jobs:
+  run-cycle:
+    if: >
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'issues' && github.event.label.name == '/cycle')
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+      id-token: write
+      actions: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get issue details and remove trigger label
+        id: issue
+        uses: actions/github-script@v7
+        with:
+          script: |
+            let issueNumber, issueTitle;
+
+            if (context.eventName === 'workflow_dispatch') {
+              issueNumber = parseInt(context.payload.inputs.issue_number);
+              const issue = await github.rest.issues.get({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issueNumber
+              });
+              issueTitle = issue.data.title;
+            } else {
+              issueNumber = context.payload.issue.number;
+              issueTitle = context.payload.issue.title;
+
+              // Remove the /cycle label immediately — it's a trigger, not persistent state
+              try {
+                await github.rest.issues.removeLabel({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issueNumber,
+                  name: '/cycle'
+                });
+              } catch (e) {
+                console.log('Could not remove /cycle label:', e.message);
+              }
+            }
+
+            const match = issueTitle.match(/v\d+\.\d+(\.\d+)?/);
+            const version = match ? match[0] : '';
+
+            core.setOutput('number', issueNumber);
+            core.setOutput('title', issueTitle);
+            core.setOutput('version', version);
+            console.log(`Issue #${issueNumber}: ${issueTitle} (${version})`);
+
+      - name: Run Claude Code /cycle
+        id: claude
+        uses: anthropics/claude-code-action@v1
+        env:
+          K3M_BACKEND: github
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          additional_permissions: |
+            actions: read
+          show_full_output: true
+          prompt: |
+            You are implementing milestone ${{ steps.issue.outputs.version }} for issue #${{ steps.issue.outputs.number }}.
+
+            Issue title: "${{ steps.issue.outputs.title }}"
+
+            The k3m-cycles plugin is available. Backend is set to "github" via K3M_BACKEND env var.
+
+            Run `/cycle ${{ steps.issue.outputs.version }}` to execute the full implementation cycle.
+
+            IMPORTANT RULES:
+            - Run ALL phases automatically: spec → plan → track → implement → review → test → verify → confirm → retro
+            - Do NOT stop and ask for confirmation between phases
+            - Do NOT skip any phase — every phase must execute
+            - Create a PR when implementation is complete
+            - The PR body MUST contain "Closes #${{ steps.issue.outputs.number }}"
+            - After PR creation, Phase 8 (retro) must still run
+            - After the PR is created, add a comment to issue #${{ steps.issue.outputs.number }} with a link to the PR
+            - Update issue labels to reflect state transitions (implementing → reviewing → testing → verified → complete → retro-done)
