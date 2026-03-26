@@ -19,7 +19,7 @@
         "name": "k3m.sh",
         "email": "me@k3m.sh"
       },
-      "source": "./core-devtools",
+      "source": "./plugins/core-devtools",
       "category": "development"
     },
     {
@@ -30,7 +30,7 @@
         "name": "k3m.sh",
         "email": "me@k3m.sh"
       },
-      "source": "./rup-lifecycle",
+      "source": "./plugins/rup-lifecycle",
       "category": "workflow"
     },
     {
@@ -41,7 +41,7 @@
         "name": "k3m.sh",
         "email": "me@k3m.sh"
       },
-      "source": "./plugin-dev",
+      "source": "./plugins/plugin-dev",
       "category": "development"
     },
     {
@@ -52,7 +52,7 @@
         "name": "k3m.sh",
         "email": "me@k3m.sh"
       },
-      "source": "./meta-dev",
+      "source": "./plugins/meta-dev",
       "category": "development"
     },
     {
@@ -63,7 +63,7 @@
         "name": "k3m.sh",
         "email": "me@k3m.sh"
       },
-      "source": "./cycles",
+      "source": "./plugins/cycles",
       "category": "workflow"
     }
   ]
