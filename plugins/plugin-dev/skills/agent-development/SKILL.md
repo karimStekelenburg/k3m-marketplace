@@ -139,6 +139,43 @@ Visual identifier for agent in UI.
 - Red: Critical, security
 - Magenta: Creative, generation
 
+### initialPrompt (optional)
+
+Auto-submit a first turn when the agent starts (v2.1.83).
+
+**Format:** String
+
+**Example:**
+```yaml
+initialPrompt: "Begin by reading CLAUDE.md and summarizing the project structure."
+```
+
+**Use for:**
+- Agents that should immediately start working without waiting for user input
+- Setting up context before the user's first message
+- Pre-loading information the agent needs
+
+### hooks (optional)
+
+Inline hook definitions scoped to the agent's lifetime. These hooks are active only while the agent is running and are automatically removed when the agent completes.
+
+**Format:** Object mapping event names to hook arrays (same structure as hooks.json)
+
+**Example:**
+```yaml
+hooks:
+  PreToolUse:
+    - matcher: "Write"
+      hooks:
+        - type: command
+          command: "bash ${CLAUDE_PLUGIN_ROOT}/scripts/validate.sh"
+```
+
+**Use for:**
+- Agent-specific validation logic without polluting global hooks
+- Temporary hooks that should only apply during this agent's execution
+- Scoping hook behavior to a particular autonomous task
+
 ### tools (optional)
 
 Restrict agent to specific tools.
@@ -355,6 +392,8 @@ Output: [What to provide]
 | model | Yes | inherit/sonnet/opus/haiku | inherit |
 | color | Yes | Color name | blue |
 | tools | No | Array of tool names | ["Read", "Grep"] |
+| initialPrompt | No | String | "Read CLAUDE.md first." |
+| hooks | No | Hook event map | {PreToolUse: [...]} |
 
 ### Best Practices
 
