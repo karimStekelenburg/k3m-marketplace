@@ -267,6 +267,59 @@ argument-hint: [test-pattern] [options]
 Run tests matching $1 with options: $2
 ```
 
+### effort
+
+**Type:** String
+**Required:** No
+**Default:** Inherits from conversation
+**Values:** `low`, `normal`, `high`
+
+**Purpose:** Override the model effort level when this command is invoked. Added in v2.1.80.
+
+**Examples:**
+```yaml
+effort: low    # Faster, fewer tokens — simple or formulaic commands
+```
+```yaml
+effort: normal # Default balanced effort
+```
+```yaml
+effort: high   # Deep reasoning — complex analysis commands
+```
+
+**When to use:**
+
+**Use `low` for:**
+- Quick lookups or formatting tasks
+- Commands that should be fast and cheap
+- Formulaic or templated outputs
+
+```yaml
+---
+description: Show git log summary
+effort: low
+allowed-tools: Bash(git:*)
+---
+```
+
+**Use `high` for:**
+- Complex architecture analysis
+- Security audits
+- Tasks requiring deep reasoning
+
+```yaml
+---
+description: Perform deep security audit
+effort: high
+---
+```
+
+**Best practices:**
+- Omit unless you have a specific reason to override
+- `low` pairs well with `haiku` model for maximum speed
+- `high` pairs well with `opus` for maximum capability
+- Test the quality trade-off before shipping
+
 ### disable-model-invocation
 
 **Type:** Boolean
