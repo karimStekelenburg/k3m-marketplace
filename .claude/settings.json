@@ -2,8 +2,8 @@
   "permissions": {
     "allow": []
   },
-  "enabledPlugins": [
-    "skill-creator@claude-plugins-official",
-    "plugin-dev@claude-plugins-official"
-  ]
+  "enabledPlugins": {
+    "skill-creator@claude-plugins-official": true,
+    "plugin-dev@claude-plugins-official": true
+  }
 }
