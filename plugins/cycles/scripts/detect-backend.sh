@@ -19,8 +19,11 @@ else
   export K3M_BACKEND="fs"
 fi
 
-# Export helper paths
-export K3M_SCRIPTS="${CLAUDE_PLUGIN_ROOT}/scripts"
+# Export helper paths — resolve from this script's own location so we don't
+# depend on CLAUDE_PLUGIN_ROOT being set correctly in every context.
+K3M_SCRIPTS="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+export K3M_SCRIPTS
+export CLAUDE_PLUGIN_ROOT="${K3M_SCRIPTS%/scripts}"
 export K3M_BACKEND_SCRIPT="${K3M_SCRIPTS}/backend-${K3M_BACKEND}.sh"
 
 if [[ ! -f "$K3M_BACKEND_SCRIPT" ]]; then

@@ -18,7 +18,7 @@ Run a complete spec-to-verified implementation cycle. This is the orchestrator t
 Before starting, detect which backend to use. Run this as a single Bash command:
 
 ```
-source "$CLAUDE_PLUGIN_ROOT/scripts/detect-backend.sh" && source "$CLAUDE_PLUGIN_ROOT/scripts/backend-${K3M_BACKEND}.sh" && source "$CLAUDE_PLUGIN_ROOT/scripts/state-machine.sh" && echo "Backend: $K3M_BACKEND"
+source "$CLAUDE_PLUGIN_ROOT/scripts/detect-backend.sh" && source "$K3M_BACKEND_SCRIPT" && source "$K3M_SCRIPTS/state-machine.sh" && echo "Backend: $K3M_BACKEND"
 ```
 
 - **`fs`** (default, local): Reads/writes `docs/specs/`, `docs/plans/`, `docs/tracking/`, `docs/ROADMAP.md`
