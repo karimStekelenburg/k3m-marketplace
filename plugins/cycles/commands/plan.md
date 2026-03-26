@@ -13,9 +13,8 @@ The user provides a spec reference (e.g., "v0.1", a file path) or asks to "plan 
 
 ## Backend
 
-```!
-source "$CLAUDE_PLUGIN_ROOT/scripts/detect-backend.sh"
-source "$K3M_BACKEND_SCRIPT"
+```
+source "$CLAUDE_PLUGIN_ROOT/scripts/detect-backend.sh" && source "$K3M_BACKEND_SCRIPT"
 ```
 
 ## Workflow
