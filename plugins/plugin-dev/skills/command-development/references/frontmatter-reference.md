@@ -267,6 +267,54 @@ argument-hint: [test-pattern] [options]
 Run tests matching $1 with options: $2
 ```
 
+### effort
+
+**Type:** String
+**Required:** No
+**Default:** Inherits from conversation
+**Values:** `low`, `medium`, `high`
+
+**Purpose:** Override model effort level when the command executes (v2.1.80)
+
+**Examples:**
+```yaml
+effort: low    # Quick lookup, minimal reasoning needed
+```
+```yaml
+effort: high   # Deep analysis, complex reasoning required
+```
+
+**When to use:**
+
+**Use `low` for:**
+- Simple, formulaic commands
+- Fast lookups or summaries
+- Commands where speed matters more than depth
+
+```yaml
+---
+description: Summarize current git log
+effort: low
+---
+```
+
+**Use `high` for:**
+- Complex analysis or architectural review
+- Commands that need thorough reasoning
+- Critical tasks where quality is paramount
+
+```yaml
+---
+description: Analyze codebase for security vulnerabilities
+effort: high
+---
+```
+
+**Best practices:**
+- Omit unless command has a specific effort requirement
+- Pair with matching `model` selection when appropriate
+- Document why a non-default effort level is needed
+
 ### disable-model-invocation
 
 **Type:** Boolean
@@ -449,6 +497,7 @@ Before committing command:
 - [ ] Description under 60 characters
 - [ ] allowed-tools uses proper format
 - [ ] model is valid value if specified
+- [ ] effort is valid value if specified (low/medium/high)
 - [ ] argument-hint matches positional arguments
 - [ ] disable-model-invocation used appropriately
 
