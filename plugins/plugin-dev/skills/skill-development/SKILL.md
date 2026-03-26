@@ -166,8 +166,24 @@ Also, delete any example files and directories not needed for the skill. Create 
 name: Skill Name
 description: This skill should be used when the user asks to "specific phrase 1", "specific phrase 2", "specific phrase 3". Include exact phrases users would say that should trigger this skill. Be concrete and specific.
 version: 0.1.0
+effort: normal          # optional: low | normal | high — overrides model effort level
+paths:                  # optional: path-specific activation globs (v2.1.84+)
+  - "src/**/*.ts"
+  - "*.config.js"
+hooks:                  # optional: inline hooks scoped to skill lifetime
+  PreToolUse:
+    - matcher: "Write"
+      hooks:
+        - type: command
+          command: "bash ${CLAUDE_PLUGIN_ROOT}/hooks/validate.sh"
 ---
 ```
+
+**Additional frontmatter fields:**
+
+- `effort` — override the model effort level when this skill is invoked: `low`, `normal`, or `high` (added v2.1.80)
+- `paths` — YAML list of glob patterns; skill only activates when the user's context matches one of these paths (added v2.1.84)
+- `hooks` — inline hook definitions scoped to this skill's lifetime; same structure as `hooks/hooks.json`
 
 **Good description examples:**
 ```yaml
