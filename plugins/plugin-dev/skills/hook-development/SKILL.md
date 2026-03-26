@@ -47,7 +47,9 @@ Execute bash commands for deterministic checks:
 {
   "type": "command",
   "command": "bash ${CLAUDE_PLUGIN_ROOT}/scripts/validate.sh",
-  "timeout": 60
+  "timeout": 60,
+  "shell": "bash",
+  "async": false
 }
 ```
 
@@ -56,6 +58,47 @@ Execute bash commands for deterministic checks:
 - File system operations
 - External tool integrations
 - Performance-critical checks
+
+**Additional fields:**
+- `shell` — `"bash"` or `"powershell"` (defaults to system shell)
+- `async` — run asynchronously without blocking Claude (default false)
+
+### HTTP Hooks
+
+Send events to an HTTP endpoint via POST:
+
+```json
+{
+  "type": "http",
+  "url": "https://your-server.example.com/hook",
+  "headers": {
+    "Authorization": "Bearer ${API_TOKEN}"
+  },
+  "allowedEnvVars": ["API_TOKEN", "PROJECT_ID"]
+}
+```
+
+**Use for:**
+- Sending events to external services
+- Audit logging to remote systems
+- Triggering webhooks and CI/CD pipelines
+
+### Agent Hooks
+
+Spawn a subagent with tool access to handle the event:
+
+```json
+{
+  "type": "agent",
+  "prompt": "Review this tool call for security issues and return approve or deny.",
+  "model": "haiku"
+}
+```
+
+**Use for:**
+- Complex reasoning that needs tool access
+- Multi-step validation workflows
+- When a subagent should take remediation actions
 
 ## Hook Configuration Formats
 
@@ -261,6 +304,15 @@ Execute when Claude Code session begins. Use to load context and set environment
 echo "export PROJECT_TYPE=nodejs" >> "$CLAUDE_ENV_FILE"
 ```
 
+**Matcher: source** — filter by what caused the session to start:
+```json
+{
+  "matcher": {"source": "startup"}
+}
+```
+
+Valid `source` values: `startup`, `resume`, `clear`, `compact`
+
 See `examples/load-context.sh` for complete example.
 
 ### SessionEnd
@@ -271,9 +323,73 @@ Execute when session ends. Use for cleanup, logging, and state preservation.
 
 Execute before context compaction. Use to add critical information to preserve.
 
+### PostCompact
+
+Execute after compaction completes. Use to reload context that was compacted away.
+
 ### Notification
 
 Execute when Claude sends notifications. Use to react to user notifications.
+
+### InstructionsLoaded
+
+Execute when CLAUDE.md or rules files are loaded. Use to validate or augment instructions.
+
+### PermissionRequest
+
+Execute when a permission dialog is about to be shown to the user. Use to auto-approve safe operations.
+
+### PostToolUseFailure
+
+Execute after a tool call fails. Use to react to errors, add context, or retry logic.
+
+### StopFailure
+
+Execute when the turn ends due to an API or system error. Use for error tracking or recovery.
+
+### TeammateIdle
+
+Execute when a teammate is about to go idle. Use for coordination in multi-agent workflows.
+
+### TaskCompleted
+
+Execute when a task is marked as completed.
+
+### TaskCreated
+
+Execute when a new task is created (v2.1.84+).
+
+### ConfigChange
+
+Execute when a configuration file changes.
+
+### CwdChanged
+
+Execute when the working directory changes (v2.1.83+). Supports `$CLAUDE_ENV_FILE` for persisting env vars.
+
+### FileChanged
+
+Execute when a watched file changes (v2.1.83+). Supports `$CLAUDE_ENV_FILE` for persisting env vars.
+
+### WorktreeCreate
+
+Execute when a git worktree is being created.
+
+### WorktreeRemove
+
+Execute when a git worktree is being removed.
+
+### Elicitation
+
+Execute when an MCP server requests user input. Use to provide automated responses.
+
+### ElicitationResult
+
+Execute after the user responds to an elicitation.
+
+### SubagentStart
+
+Execute when a subagent is spawned.
 
 ## Hook Output Format
 
@@ -325,7 +441,7 @@ Available in all command hooks:
 
 - `$CLAUDE_PROJECT_DIR` - Project root path
 - `$CLAUDE_PLUGIN_ROOT` - Plugin directory (use for portable paths)
-- `$CLAUDE_ENV_FILE` - SessionStart only: persist env vars here
+- `$CLAUDE_ENV_FILE` - SessionStart, CwdChanged, FileChanged: persist env vars here
 - `$CLAUDE_CODE_REMOTE` - Set if running in remote context
 
 **Always use ${CLAUDE_PLUGIN_ROOT} in hook commands for portability:**
@@ -488,7 +604,25 @@ cd $CLAUDE_PROJECT_DIR
 }
 ```
 
-**Defaults:** Command hooks (60s), Prompt hooks (30s)
+**Defaults:** Command hooks (600s), Prompt hooks (30s), Agent hooks (60s)
+
+### Common Hook Fields
+
+All hook types support these optional fields:
+
+- `timeout` — seconds before hook is killed (see defaults above)
+- `statusMessage` — custom spinner message shown while hook runs
+- `once` — `true` to run only once per session (skills hooks only)
+
+```json
+{
+  "type": "command",
+  "command": "bash ${CLAUDE_PLUGIN_ROOT}/scripts/setup.sh",
+  "statusMessage": "Setting up project environment...",
+  "once": true,
+  "timeout": 30
+}
+```
 
 ## Performance Considerations
 
@@ -635,13 +769,29 @@ echo "$output" | jq .
 |-------|------|---------|
 | PreToolUse | Before tool | Validation, modification |
 | PostToolUse | After tool | Feedback, logging |
+| PostToolUseFailure | After tool fails | Error handling |
 | UserPromptSubmit | User input | Context, validation |
 | Stop | Agent stopping | Completeness check |
+| StopFailure | Turn ends with error | Error tracking |
 | SubagentStop | Subagent done | Task validation |
+| SubagentStart | Subagent spawned | Initialization |
 | SessionStart | Session begins | Context loading |
 | SessionEnd | Session ends | Cleanup, logging |
 | PreCompact | Before compact | Preserve context |
+| PostCompact | After compact | Reload context |
 | Notification | User notified | Logging, reactions |
+| InstructionsLoaded | CLAUDE.md loaded | Validation |
+| PermissionRequest | Permission dialog | Auto-approve |
+| TeammateIdle | Teammate going idle | Coordination |
+| TaskCompleted | Task completed | Tracking |
+| TaskCreated | Task created | Tracking |
+| ConfigChange | Config changed | Reload |
+| CwdChanged | Working dir changed | Environment setup |
+| FileChanged | Watched file changed | Reload |
+| WorktreeCreate | Worktree created | Setup |
+| WorktreeRemove | Worktree removed | Cleanup |
+| Elicitation | MCP requests input | Automation |
+| ElicitationResult | User responds | Processing |
 
 ### Best Practices
 
