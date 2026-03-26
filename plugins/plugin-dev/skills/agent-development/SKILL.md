@@ -159,6 +159,40 @@ tools: ["Read", "Write", "Grep", "Bash"]
 - Testing: `["Read", "Bash", "Grep"]`
 - Full access: Omit field or use `["*"]`
 
+### initialPrompt (optional)
+
+Auto-submit a first turn when the agent starts. Available since v2.1.83.
+
+**Format:** String
+
+```yaml
+initialPrompt: "Begin by reading the project README and summarizing the current state."
+```
+
+**Use for:**
+- Giving agents a warm-start with initial context
+- Triggering autonomous setup on agent spawn
+- Seeding agents with instructions before user interaction
+
+### hooks (optional)
+
+Inline hook definitions scoped to the agent's lifetime. Hooks defined here are active only while this agent is running.
+
+**Format:** Object (same structure as hooks.json)
+
+```yaml
+hooks:
+  PreToolUse:
+    - matcher: "Write"
+      hooks:
+        - type: command
+          command: "bash ${CLAUDE_PLUGIN_ROOT}/hooks/validate-write.sh"
+```
+
+**Use for:**
+- Agent-specific validation or policies
+- Hooks that should not apply outside this agent's scope
+
 ## System Prompt Design
 
 The markdown body becomes the agent's system prompt. Write in second person, addressing the agent directly.
@@ -355,6 +389,8 @@ Output: [What to provide]
 | model | Yes | inherit/sonnet/opus/haiku | inherit |
 | color | Yes | Color name | blue |
 | tools | No | Array of tool names | ["Read", "Grep"] |
+| initialPrompt | No | String | "Start by reading README..." |
+| hooks | No | Hooks object | {PreToolUse: [...]} |
 
 ### Best Practices
 
