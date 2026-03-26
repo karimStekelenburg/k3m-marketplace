@@ -98,11 +98,13 @@ Execute local MCP servers as child processes with communication via stdin/stdout
 - Check for stray print/console.log statements
 - Verify JSON-RPC format
 
-## SSE (Server-Sent Events)
+## SSE (Server-Sent Events) — DEPRECATED
+
+> **DEPRECATED:** SSE transport is deprecated in favor of HTTP transport. New integrations should use `"type": "http"` instead. SSE continues to work for existing configurations but should not be used for new remote server setups.
 
 ### Overview
 
-Connect to hosted MCP servers via HTTP with server-sent events for streaming. Best for cloud services and OAuth authentication.
+Connect to hosted MCP servers via HTTP with server-sent events for streaming. Previously used for cloud services and OAuth authentication. Prefer HTTP transport for new remote servers.
 
 ### Configuration
 
@@ -299,87 +301,18 @@ Connect to RESTful MCP servers via standard HTTP requests. Best for token-based 
 - Check server performance
 - Optimize tool implementations
 
-## WebSocket (Real-time)
-
-### Overview
-
-Connect to MCP servers via WebSocket for real-time bidirectional communication. Best for streaming and low-latency applications.
-
-### Configuration
-
-**Basic:**
-```json
-{
-  "realtime": {
-    "type": "ws",
-    "url": "wss://mcp.example.com/ws"
-  }
-}
-```
-
-**With authentication:**
-```json
-{
-  "realtime": {
-    "type": "ws",
-    "url": "wss://mcp.example.com/ws",
-    "headers": {
-      "Authorization": "Bearer ${TOKEN}",
-      "X-Client-ID": "${CLIENT_ID}"
-    }
-  }
-}
-```
-
-### Connection Lifecycle
-
-1. **Handshake**: WebSocket upgrade request
-2. **Connection**: Persistent bidirectional channel
-3. **Messages**: JSON-RPC over WebSocket
-4. **Heartbeat**: Keep-alive messages
-5. **Reconnection**: Automatic on disconnect
-
-### Use Cases
-
-- Real-time data streaming
-- Live updates and notifications
-- Collaborative editing
-- Low-latency tool calls
-- Push notifications from server
-
-### Best Practices
-
-1. **Use WSS (secure WebSocket), never WS**
-2. **Implement heartbeat/ping-pong**
-3. **Handle reconnection logic**
-4. **Buffer messages during disconnection**
-5. **Set connection timeouts**
-
-### Troubleshooting
-
-**Connection drops:**
-- Implement reconnection logic
-- Check network stability
-- Verify server supports WebSocket
-- Review firewall settings
-
-**Message delivery:**
-- Implement message acknowledgment
-- Handle out-of-order messages
-- Buffer during disconnection
-
 ## Comparison Matrix
 
-| Feature | stdio | SSE | HTTP | WebSocket |
-|---------|-------|-----|------|-----------|
-| **Transport** | Process | HTTP/SSE | HTTP | WebSocket |
-| **Direction** | Bidirectional | Server→Client | Request/Response | Bidirectional |
-| **State** | Stateful | Stateful | Stateless | Stateful |
-| **Auth** | Env vars | OAuth/Headers | Headers | Headers |
-| **Use Case** | Local tools | Cloud services | REST APIs | Real-time |
-| **Latency** | Lowest | Medium | Medium | Low |
-| **Setup** | Easy | Medium | Easy | Medium |
-| **Reconnect** | Process respawn | Automatic | N/A | Automatic |
+| Feature | stdio | SSE (deprecated) | HTTP |
+|---------|-------|------------------|------|
+| **Transport** | Process | HTTP/SSE | HTTP |
+| **Direction** | Bidirectional | Server→Client | Request/Response |
+| **State** | Stateful | Stateful | Stateless |
+| **Auth** | Env vars | OAuth/Headers | Headers |
+| **Use Case** | Local tools | Legacy cloud services | Remote servers, REST APIs |
+| **Latency** | Lowest | Medium | Medium |
+| **Setup** | Easy | Medium | Easy |
+| **Reconnect** | Process respawn | Automatic | N/A |
 
 ## Choosing the Right Type
 
@@ -389,23 +322,15 @@ Connect to MCP servers via WebSocket for real-time bidirectional communication. 
 - Working with file systems or local databases
 - Distributing server with plugin
 
-**Use SSE when:**
-- Connecting to hosted services
-- Need OAuth authentication
-- Using official MCP servers (Asana, GitHub)
-- Want automatic reconnection
-
 **Use HTTP when:**
-- Integrating with REST APIs
+- Connecting to remote or hosted services
+- Integrating with REST API backends
 - Need stateless interactions
-- Using token-based auth
+- Using token-based or header auth
 - Simple request/response pattern
+- Prefer HTTP over SSE for all new remote server integrations
 
-**Use WebSocket when:**
-- Need real-time updates
-- Building collaborative features
-- Low-latency critical
-- Bi-directional streaming required
+**Avoid SSE for new integrations** — it is deprecated. Migrate existing SSE servers to HTTP transport.
 
 ## Migration Between Types
 
@@ -431,29 +356,29 @@ Connect to MCP servers via WebSocket for real-time bidirectional communication. 
 }
 ```
 
-### From HTTP to WebSocket
+### From SSE to HTTP
 
-**Before (HTTP):**
+**Before (SSE — deprecated):**
 ```json
 {
-  "api": {
+  "hosted-server": {
+    "type": "sse",
+    "url": "https://mcp.example.com/sse"
+  }
+}
+```
+
+**After (HTTP — recommended):**
+```json
+{
+  "hosted-server": {
     "type": "http",
-    "url": "https://api.example.com/mcp"
+    "url": "https://mcp.example.com/mcp"
   }
 }
 ```
 
-**After (WebSocket):**
-```json
-{
-  "realtime": {
-    "type": "ws",
-    "url": "wss://api.example.com/ws"
-  }
-}
-```
-
-Benefits: Real-time updates, lower latency, bi-directional communication.
+Update the server URL to the HTTP endpoint and replace `"type": "sse"` with `"type": "http"`.
 
 ## Advanced Configuration
 
@@ -529,8 +454,7 @@ Set different values for dev/prod:
 
 Choose the MCP server type based on your use case:
 - **stdio** for local, custom, or NPM-packaged servers
-- **SSE** for hosted services with OAuth
-- **HTTP** for REST APIs with token auth
-- **WebSocket** for real-time bidirectional communication
+- **HTTP** for remote servers, hosted services, and REST API backends
+- **SSE** is deprecated — migrate to HTTP for remote servers
 
 Test thoroughly and handle errors gracefully for robust MCP integration.
