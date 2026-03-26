@@ -169,6 +169,33 @@ version: 0.1.0
 ---
 ```
 
+**Additional Frontmatter Fields (optional):**
+
+- `effort` — Override model effort level when the skill is invoked (v2.1.80). Values: `low`, `medium`, `high`. Use to ensure computationally intensive skills get higher effort or quick-lookup skills run lean.
+
+  ```yaml
+  effort: high
+  ```
+
+- `hooks` — Inline hook definitions scoped to this skill's lifetime. Same structure as hooks.json. Hooks are active only while the skill is in use.
+
+  ```yaml
+  hooks:
+    PreToolUse:
+      - matcher: "Write"
+        hooks:
+          - type: command
+            command: "bash ${CLAUDE_PLUGIN_ROOT}/scripts/validate.sh"
+  ```
+
+- `paths` — YAML list of glob patterns for path-specific activation (v2.1.84). When specified, the skill only activates when the current working path matches one of the globs.
+
+  ```yaml
+  paths:
+    - "src/**/*.ts"
+    - "lib/**/*.js"
+  ```
+
 **Good description examples:**
 ```yaml
 description: This skill should be used when the user asks to "create a hook", "add a PreToolUse hook", "validate tool use", "implement prompt-based hooks", or mentions hook events (PreToolUse, PostToolUse, Stop).
