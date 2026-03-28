@@ -1,0 +1,77 @@
+# Claude Code Platform Reference Documentation Index
+# This file declares external documentation dependencies and tracks freshness.
+# The staleness-check command reads this to determine what needs updating.
+
+name: Claude Code Platform Documentation
+last_verified: "2026-03-27T00:00:00Z"
+
+sources:
+  - id: plugins-reference
+    url: "https://code.claude.com/docs/en/plugins-reference"
+    description: >
+      Complete technical reference for plugin system: manifest schema,
+      component specs (skills, agents, hooks, MCP, LSP), directory
+      structure, CLI commands, debugging tools.
+    local_doc: docs/plugins-reference.md
+    last_fetched: "2026-03-27T00:00:00Z"
+    coverage_notes: >
+      Covers all 22 hook events, 4 hook types (command, http, prompt, agent),
+      LSP servers, userConfig, channels, ${CLAUDE_PLUGIN_DATA}, output styles,
+      plugin caching, path traversal limitations.
+
+  - id: plugins-guide
+    url: "https://code.claude.com/docs/en/plugins"
+    description: >
+      Plugin creation guide: quickstart, structure overview, development
+      workflow, testing with --plugin-dir, migration from standalone config.
+    local_doc: docs/plugins-guide.md
+    last_fetched: "2026-03-27T00:00:00Z"
+
+  - id: hooks-reference
+    url: "https://code.claude.com/docs/en/hooks"
+    description: >
+      Detailed hooks documentation: all event types, hook types (command,
+      http, prompt, agent), input/output formats, matchers, environment
+      variables.
+    local_doc: docs/hooks-reference.md
+    last_fetched: null
+
+  - id: skills-reference
+    url: "https://code.claude.com/docs/en/skills"
+    description: >
+      Skills authoring: SKILL.md format, frontmatter fields, progressive
+      disclosure, auto-discovery, $ARGUMENTS, disable-model-invocation.
+    local_doc: docs/skills-reference.md
+    last_fetched: null
+
+  - id: agents-reference
+    url: "https://code.claude.com/docs/en/sub-agents"
+    description: >
+      Agent configuration: frontmatter fields (model, effort, maxTurns,
+      tools, disallowedTools, skills, memory, background, isolation),
+      integration points.
+    local_doc: docs/agents-reference.md
+    last_fetched: null
+
+  - id: marketplace-reference
+    url: "https://code.claude.com/docs/en/plugin-marketplaces"
+    description: >
+      Marketplace creation and distribution: marketplace.json schema,
+      plugin sources (github, url, git-subdir, npm, relative path),
+      version management, hosting, strict mode.
+    local_doc: docs/marketplace-reference.md
+    last_fetched: "2026-03-27T00:00:00Z"
+
+  - id: settings-reference
+    url: "https://code.claude.com/docs/en/settings"
+    description: >
+      Settings and configuration: scopes, settings files, plugin settings,
+      extraKnownMarketplaces, strictKnownMarketplaces.
+    local_doc: docs/settings-reference.md
+    last_fetched: null
+
+changelog_sources:
+  - url: "https://code.claude.com/docs/en/changelog"
+    description: "Claude Code changelog — primary source for staleness detection"
+  - url: "https://code.claude.com/docs/llms.txt"
+    description: "Documentation index — fallback for discovering moved/new pages"

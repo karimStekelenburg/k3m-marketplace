@@ -1,0 +1,15 @@
+{
+  "timestamp": "2026-03-26T01:07:04.794658+00:00",
+  "total": 1,
+  "success": 1,
+  "failed": 0,
+  "results": [
+    {
+      "id": "docs-claude-code",
+      "url": "https://docs.anthropic.com/en/docs/claude-code/overview",
+      "status_code": 200,
+      "cached": "/Users/krm_xel/dev/k3m-marketplace/plugins/plugin-dev-sync/data/cache/docs-claude-code.txt",
+      "size": 783233
+    }
+  ]
+}
