@@ -28,7 +28,7 @@ a PR with a detailed report.
 ## Pipeline Overview
 
 ```
-fetch → discover → diff → independent review → apply → commit → PR
+fetch → discover → diff → review → worktree → apply → changelog → push → PR
 ```
 
 ## Step 1: Fetch Resources
@@ -84,15 +84,79 @@ Drop any changes the reviewer rejects. Log rejections in the PR report.
 
 If there are approved changes (and not `--dry-run`):
 
-1. Create a new branch: `meta-dev/sync-YYYY-MM-DD-HHMMSS`
-2. Launch the **patch-applier** agent to apply each approved change
-3. After each logical group of changes, commit with a descriptive message
-4. Create a PR using `gh pr create` with the full report as the body
+### Step 5.1: Set up worktree
+
+All sync work happens in an isolated worktree:
+
+```bash
+BRANCH="plugin-dev-sync/sync-YYYY-MM-DD-HHMMSS"
+WORKTREE="/tmp/k3m-sync-$$"
+git worktree add -b "$BRANCH" "$WORKTREE" main
+cd "$WORKTREE"
+```
+
+### Step 5.2: Apply changes
+
+1. Launch the **patch-applier** agent to apply each approved change
+2. After each logical group of changes, commit with a descriptive message
+
+### Step 5.3: Update plugin-dev changelog
+
+After all plugin-dev changes are committed, update `plugins/plugin-dev/CHANGELOG.md`:
+
+1. Read the existing changelog (or create it with this header if missing):
+
+```markdown
+# Changelog
+
+All notable changes to plugin-dev are documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/).
+```
+
+2. Add a new date section (or append to today's if it already exists)
+3. For each approved change that was applied, add a one-line entry categorized as:
+   - **Added** — new documentation or features
+   - **Changed** — updates to existing content
+   - **Fixed** — corrections to incorrect information
+   - **Removed** — deprecated or deleted content
+
+Example:
+
+```markdown
+## 2026-03-28
+
+- **Fixed**: Hook timeout defaults corrected from 60s to 600s
+- **Removed**: Fabricated WebSocket MCP transport
+- **Added**: 16 missing hook events documentation
+- **Added**: `http` and `agent` hook handler types
+```
+
+4. Commit: `docs(plugin-dev): update changelog for sync YYYY-MM-DD`
+
+### Step 5.4: Push and create PR
+
+```bash
+git push -u origin "$BRANCH"
+gh pr create --title "fix(plugin-dev): sync against latest docs YYYY-MM-DD" --body "$(cat <<'EOF'
+<PR body — see format below>
+EOF
+)"
+```
+
+### Step 5.5: Clean up worktree
+
+```bash
+cd -
+git worktree remove "$WORKTREE"
+```
+
+Report the PR URL to the user.
 
 ### PR Body Format
 
 ```markdown
-## Meta-Dev Sync Report
+## Plugin-Dev Sync Report
 
 **Date**: YYYY-MM-DD
 **Resources fetched**: X/Y successful
