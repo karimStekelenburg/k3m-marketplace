@@ -295,6 +295,58 @@ Hook configuration location or inline definition.
 - Complex plugins: External JSON file
 - Multiple hook sets: Separate files for different contexts
 
+#### skills
+
+**Type**: String or Array of strings
+**Default**: `"./skills"`
+**Example**: `"./plugin-skills"`
+
+Additional directories containing skill definitions.
+
+**Format**: Same as `commands` field
+
+**Use cases**:
+- Organizing skills by domain
+- Loading skills from shared locations
+
+#### outputStyles
+
+**Type**: String or Array of strings
+**Default**: `"./output-styles"`
+**Example**: `"./styles"`
+
+Output style definition directory. Output styles define formatting rules for Claude's responses.
+
+> **Note**: Exact field name (`outputStyles`) should be verified against the plugins-reference docs if you encounter validation errors.
+
+**Use cases**:
+- Custom response formatting
+- Brand-consistent output
+- Domain-specific output templates
+
+#### lspServers
+
+**Type**: Object (inline configuration only)
+**Default**: none
+
+LSP (Language Server Protocol) server definitions. Inline configuration only — no external file support.
+
+> **Note**: Exact field name (`lspServers`) should be verified against the plugins-reference docs if you encounter validation errors.
+
+**Example**:
+```json
+{
+  "lspServers": {
+    "my-lsp": {
+      "command": "${CLAUDE_PLUGIN_ROOT}/bin/lsp-server",
+      "args": ["--stdio"]
+    }
+  }
+}
+```
+
+See the `lsp-integration` skill for full LSP configuration reference.
+
 #### mcpServers
 
 **Type**: String (path to JSON file) or Object (inline configuration)

@@ -32,6 +32,8 @@ plugin-name/
 │       └── SKILL.md         # Required for each skill
 ├── hooks/
 │   └── hooks.json           # Event handler configuration
+├── output-styles/            # Output style definitions
+├── settings.json             # Default settings (only `agent` key supported)
 ├── .mcp.json                # MCP server definitions
 └── scripts/                 # Helper scripts and utilities
 ```
@@ -281,6 +283,37 @@ Use `${CLAUDE_PLUGIN_ROOT}` environment variable for all intra-plugin path refer
 - Relative paths from working directory (`./scripts/...` in commands)
 - Home directory shortcuts (`~/plugins/...`)
 
+### ${CLAUDE_PLUGIN_DATA}
+
+Use `${CLAUDE_PLUGIN_DATA}` for persistent plugin state that must survive plugin updates. Added in v2.1.78.
+
+```json
+{
+  "command": "bash ${CLAUDE_PLUGIN_ROOT}/scripts/save-state.sh ${CLAUDE_PLUGIN_DATA}/state.json"
+}
+```
+
+**Key behaviors:**
+- Data persists across plugin updates and reinstalls
+- `/plugin uninstall` prompts before deleting this directory
+- Separate from `${CLAUDE_PLUGIN_ROOT}` which may be replaced on update
+- Use for: user preferences, cached data, plugin state, databases
+
+### CLAUDE_CODE_PLUGIN_SEED_DIR
+
+The `CLAUDE_CODE_PLUGIN_SEED_DIR` environment variable pre-seeds plugin directories on startup. Added in v2.1.79.
+
+**Format:** One or more paths separated by the platform path delimiter (`:` on macOS/Linux, `;` on Windows)
+
+```bash
+export CLAUDE_CODE_PLUGIN_SEED_DIR="/company/shared-plugins:/team/plugins"
+```
+
+**Use cases:**
+- Enterprise deployments where IT manages plugin directories
+- Team environments with shared plugin repositories
+- CI/CD environments that need consistent plugin sets
+
 ### Path Resolution Rules
 
 **In manifest JSON fields** (hooks, MCP servers):
@@ -350,7 +383,31 @@ Claude Code automatically discovers and loads components:
 **Discovery timing**:
 - Plugin installation: Components register with Claude Code
 - Plugin enable: Components become available for use
-- No restart required: Changes take effect on next Claude Code session
+- Mid-session reload: Use `/reload-plugins` to reload all plugins without restarting
+
+### /reload-plugins
+
+Use `/reload-plugins` to reload all installed plugins in the current session without restarting Claude Code. This supersedes the "next session" requirement for most changes.
+
+```
+/reload-plugins
+```
+
+**When to use:** After editing plugin files, updating hook configurations, or adding new components.
+
+### --plugin-dir (development override)
+
+Load a plugin for the current session only without installing it:
+
+```bash
+claude --plugin-dir ./my-plugin
+```
+
+**Behavior:**
+- Can be repeated to load multiple plugins: `--plugin-dir ./plugin-a --plugin-dir ./plugin-b`
+- A local `--plugin-dir` plugin overrides an installed marketplace plugin of the same name (except managed plugins)
+- Session-scoped only — does not persist after the session ends
+- Ideal for iterative plugin development and testing
 
 **Override behavior**: Custom paths in `plugin.json` supplement (not replace) default directories
 
