@@ -85,14 +85,14 @@ You are an expert plugin validator specializing in comprehensive validation of C
      - Valid JSON syntax
      - Valid event names (PreToolUse, PostToolUse, Stop, etc.)
      - Each hook has `matcher` and `hooks` array
-     - Hook type is `command` or `prompt`
+     - Hook type is `command`, `prompt`, `http`, or `agent`
      - Commands reference existing scripts with ${CLAUDE_PLUGIN_ROOT}
 
 8. **Validate MCP Configuration** (if `.mcp.json` or `mcpServers` in manifest):
    - Check JSON syntax
    - Verify server configurations:
      - stdio: has `command` field
-     - sse/http/ws: has `url` field
+     - sse/http: has `url` field
      - Type-specific fields present
    - Check ${CLAUDE_PLUGIN_ROOT} usage for portability
 
@@ -104,7 +104,7 @@ You are an expert plugin validator specializing in comprehensive validation of C
 
 10. **Security Checks**:
     - No hardcoded credentials in any files
-    - MCP servers use HTTPS/WSS not HTTP/WS
+    - MCP servers use HTTPS not HTTP
     - Hooks don't have obvious security issues
     - No secrets in example files
 

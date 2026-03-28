@@ -1,6 +1,6 @@
 ---
 name: MCP Integration
-description: This skill should be used when the user asks to "add MCP server", "integrate MCP", "configure MCP in plugin", "use .mcp.json", "set up Model Context Protocol", "connect external service", mentions "${CLAUDE_PLUGIN_ROOT} with MCP", or discusses MCP server types (SSE, stdio, HTTP, WebSocket). Provides comprehensive guidance for integrating Model Context Protocol servers into Claude Code plugins for external tool and service integration.
+description: This skill should be used when the user asks to "add MCP server", "integrate MCP", "configure MCP in plugin", "use .mcp.json", "set up Model Context Protocol", "connect external service", mentions "${CLAUDE_PLUGIN_ROOT} with MCP", or discusses MCP server types (SSE, stdio, HTTP). Provides comprehensive guidance for integrating Model Context Protocol servers into Claude Code plugins for external tool and service integration.
 version: 0.1.0
 ---
 
@@ -92,9 +92,11 @@ Execute local MCP servers as child processes. Best for local tools and custom se
 - Communicates via stdin/stdout
 - Terminates when Claude Code exits
 
-### SSE (Server-Sent Events)
+### SSE (Server-Sent Events) — deprecated
 
-Connect to hosted MCP servers with OAuth support. Best for cloud services.
+> **Deprecated**: SSE transport is superseded by `http`. For new remote integrations use `http` instead. SSE remains functional but is no longer recommended.
+
+Connect to hosted MCP servers with OAuth support.
 
 **Configuration:**
 ```json
@@ -107,19 +109,17 @@ Connect to hosted MCP servers with OAuth support. Best for cloud services.
 ```
 
 **Use cases:**
-- Official hosted MCP servers (Asana, GitHub, etc.)
-- Cloud services with MCP endpoints
-- OAuth-based authentication
-- No local installation needed
+- Existing hosted MCP servers still using SSE endpoints
+- Legacy integrations
 
 **Authentication:**
 - OAuth flows handled automatically
 - User prompted on first use
 - Tokens managed by Claude Code
 
-### HTTP (REST API)
+### HTTP (Streamable HTTP — recommended for remote servers)
 
-Connect to RESTful MCP servers with token authentication.
+Connect to remote MCP servers using the modern HTTP transport. Preferred over SSE for all new remote integrations.
 
 **Configuration:**
 ```json
@@ -140,29 +140,6 @@ Connect to RESTful MCP servers with token authentication.
 - Token-based authentication
 - Custom API backends
 - Stateless interactions
-
-### WebSocket (Real-time)
-
-Connect to WebSocket MCP servers for real-time bidirectional communication.
-
-**Configuration:**
-```json
-{
-  "realtime-service": {
-    "type": "ws",
-    "url": "wss://mcp.example.com/ws",
-    "headers": {
-      "Authorization": "Bearer ${TOKEN}"
-    }
-  }
-}
-```
-
-**Use cases:**
-- Real-time data streaming
-- Persistent connections
-- Push notifications from server
-- Low-latency requirements
 
 ## Environment Variable Expansion
 
@@ -231,7 +208,7 @@ allowed-tools: ["mcp__plugin_asana_asana__*"]
 **Lifecycle:**
 1. Plugin loads
 2. MCP configuration parsed
-3. Server process started (stdio) or connection established (SSE/HTTP/WS)
+3. Server process started (stdio) or connection established (http/sse)
 4. Tools discovered and registered
 5. Tools available as `mcp__plugin_...__...`
 
@@ -341,13 +318,13 @@ Integrate multiple MCP servers:
 
 ## Security Best Practices
 
-### Use HTTPS/WSS
+### Use HTTPS
 
 Always use secure connections:
 
 ```json
-✅ "url": "https://mcp.example.com/sse"
-❌ "url": "http://mcp.example.com/sse"
+✅ "url": "https://mcp.example.com/mcp"
+❌ "url": "http://mcp.example.com/mcp"
 ```
 
 ### Token Management
@@ -481,13 +458,12 @@ Look for:
 | Type | Transport | Best For | Auth |
 |------|-----------|----------|------|
 | stdio | Process | Local tools, custom servers | Env vars |
-| SSE | HTTP | Hosted services, cloud APIs | OAuth |
-| HTTP | REST | API backends, token auth | Tokens |
-| ws | WebSocket | Real-time, streaming | Tokens |
+| http | HTTP | Remote servers, cloud APIs | OAuth / Tokens |
+| sse | HTTP (legacy) | Existing SSE endpoints | OAuth |
 
 ### Configuration Checklist
 
-- [ ] Server type specified (stdio/SSE/HTTP/ws)
+- [ ] Server type specified (stdio/http, or sse for legacy)
 - [ ] Type-specific fields complete (command or url)
 - [ ] Authentication configured
 - [ ] Environment variables documented
@@ -499,7 +475,7 @@ Look for:
 **DO:**
 - ✅ Use ${CLAUDE_PLUGIN_ROOT} for portable paths
 - ✅ Document required environment variables
-- ✅ Use secure connections (HTTPS/WSS)
+- ✅ Use secure connections (HTTPS)
 - ✅ Pre-allow specific MCP tools in commands
 - ✅ Test MCP integration before publishing
 - ✅ Handle connection and tool errors gracefully
@@ -541,7 +517,7 @@ Working examples in `examples/`:
 
 To add MCP integration to a plugin:
 
-1. Choose MCP server type (stdio, SSE, HTTP, ws)
+1. Choose MCP server type (stdio, http; sse for legacy endpoints)
 2. Create `.mcp.json` at plugin root with configuration
 3. Use ${CLAUDE_PLUGIN_ROOT} for all file references
 4. Document required environment variables in README
@@ -551,4 +527,4 @@ To add MCP integration to a plugin:
 8. Test error cases (connection failures, auth errors)
 9. Document MCP integration in plugin README
 
-Focus on stdio for custom/local servers, SSE for hosted services with OAuth.
+Use stdio for custom/local servers, http for remote services. Use sse only for legacy endpoints that do not yet support http transport.
