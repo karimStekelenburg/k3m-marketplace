@@ -164,6 +164,21 @@ All MCP configurations support environment variable substitution:
 
 **Best practice:** Document all required environment variables in plugin README.
 
+### headersHelper Environment Variables (v2.1.85)
+
+When using a `headersHelper` script to dynamically generate request headers, two additional environment variables are available inside the script:
+
+- `CLAUDE_CODE_MCP_SERVER_NAME` — The name of the MCP server being connected to
+- `CLAUDE_CODE_MCP_SERVER_URL` — The URL of the MCP server endpoint
+
+These enable helper scripts to adapt authentication logic per-server without hardcoding server names or URLs.
+
+### Org Connector Deduplication (v2.1.82)
+
+Plugin MCP servers that duplicate org-managed connectors are automatically suppressed. If your plugin defines an MCP server whose name or endpoint conflicts with an org-managed connector, the org connector takes precedence and the plugin server will not load.
+
+**Implication for plugin authors:** Check whether your target service is already available as an org connector before bundling it in your plugin. Use `/mcp` to see all available servers including org-provided ones.
+
 ## MCP Tool Naming
 
 When MCP servers provide tools, they're automatically prefixed:
@@ -217,18 +232,26 @@ Use `/mcp` command to see all servers including plugin-provided ones.
 
 ## Authentication Patterns
 
-### OAuth (SSE/HTTP)
+### OAuth (http/sse)
 
-OAuth handled automatically by Claude Code:
+OAuth is handled automatically by Claude Code when the server supports it. For servers that require explicit OAuth metadata, use the `oauth` field (v2.1.81):
 
 ```json
 {
-  "type": "sse",
-  "url": "https://mcp.example.com/sse"
+  "type": "http",
+  "url": "https://mcp.example.com/mcp",
+  "oauth": {
+    "authServerMetadataUrl": "https://auth.example.com/.well-known/oauth-authorization-server"
+  }
 }
 ```
 
-User authenticates in browser on first use. No additional configuration needed.
+**Supported OAuth standards** (v2.1.81):
+- RFC 9728 (OAuth 2.0 Authorization Server Metadata)
+- CIMD/SEP-991
+- Dynamic Client Registration
+
+User authenticates in browser on first use. No additional configuration needed for servers that auto-advertise OAuth endpoints.
 
 ### Token-Based (Headers)
 
@@ -261,6 +284,21 @@ Pass configuration to MCP server:
   }
 }
 ```
+
+## MCP Elicitation
+
+MCP Elicitation allows servers to request structured user input mid-task. Instead of failing when data is missing, servers can pause and ask the user for specific information.
+
+**When it fires:** The MCP server sends an elicitation request → Claude Code presents a structured form to the user → The response is sent back to the server.
+
+**Hook events for Elicitation:**
+- `Elicitation` — Fires when an MCP server requests user input. Use to intercept, log, or pre-fill responses.
+- `ElicitationResult` — Fires after the user responds. Use for audit logging or post-response actions.
+
+**Plugin author considerations:**
+- If your MCP server uses elicitation, document the prompts in your plugin README
+- Test elicitation flows in Claude Code — the UI renders structured forms based on the server's schema
+- Elicitation is only available in interactive sessions (not headless/API mode)
 
 ## Integration Patterns
 
