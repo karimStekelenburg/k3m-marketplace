@@ -161,6 +161,25 @@ model: haiku
 - `sonnet` - Standard workflows
 - `opus` - Complex analysis
 
+### effort
+
+**Purpose:** Override model effort level for this command (v2.1.80)
+**Type:** String (`low`, `medium`, `high`)
+**Default:** Inherits from conversation
+
+```yaml
+---
+effort: high
+---
+```
+
+**Use cases:**
+- `high` — Complex analysis, thorough audits
+- `medium` — Standard workflows (default)
+- `low` — Quick lookups, simple transformations
+
+**Note:** Set `effort: low` for fast utility commands to reduce latency and cost.
+
 ### argument-hint
 
 **Purpose:** Document expected arguments for autocomplete

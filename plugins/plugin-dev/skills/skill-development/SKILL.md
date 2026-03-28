@@ -43,6 +43,8 @@ skill-name/
 
 **Metadata Quality:** The `name` and `description` in YAML frontmatter determine when Claude will use the skill. Be specific about what the skill does and when to use it. Use the third-person (e.g. "This skill should be used when..." instead of "Use this skill when...").
 
+> **Description display cap (v2.1.83):** In the `/skills` listing, descriptions are truncated at 250 characters. The `/skills` menu is sorted alphabetically. Write the most important trigger context in the first 250 characters of the description. The full description is still used for skill selection — only the display is capped.
+
 #### Bundled Resources (optional)
 
 ##### Scripts (`scripts/`)
@@ -177,7 +179,11 @@ version: 0.1.0
   effort: high
   ```
 
-- `hooks` — Inline hook definitions scoped to this skill's lifetime. Same structure as hooks.json. Hooks are active only while the skill is in use.
+  ```yaml
+  effort: high
+  ```
+
+- `hooks` — Inline hook definitions scoped to this skill's lifetime. Same structure as hooks.json. Hooks are active only while the skill is in use. Supports `once: true` on individual hook handlers to run setup hooks exactly once per session.
 
   ```yaml
   hooks:
