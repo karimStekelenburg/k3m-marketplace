@@ -35,7 +35,9 @@ plugin-name/
 ├── output-styles/            # Output style definitions
 ├── settings.json             # Default settings (only `agent` key supported)
 ├── .mcp.json                # MCP server definitions
-└── scripts/                 # Helper scripts and utilities
+├── scripts/                 # Helper scripts and utilities
+└── docs/
+    └── decisions/           # Architecture Decision Records (MADR)
 ```
 
 **Critical rules:**
@@ -501,6 +503,64 @@ my-plugin/
     └── skill-two/
         └── SKILL.md
 ```
+
+## Architecture Decision Records
+
+Plugins should document significant design decisions using
+[MADR 4.0](https://adr.github.io/madr/) in `docs/decisions/`:
+
+```
+plugin-name/
+└── docs/
+    └── decisions/
+        ├── 0001-choice-of-hook-strategy.md
+        └── 0002-mcp-vs-direct-api.md
+```
+
+**When to write an ADR:**
+- Choosing between multiple valid approaches (e.g., hook vs. command)
+- Selecting external dependencies or integrations
+- Defining scope boundaries or component responsibilities
+- Making trade-offs that future maintainers should understand
+
+**File naming**: `NNNN-title-in-kebab-case.md` with sequential four-digit numbers.
+
+**Minimal template:**
+
+```markdown
+---
+status: proposed | accepted | superseded | deprecated
+date: YYYY-MM-DD
+---
+
+# NNNN — Title
+
+## Context and Problem Statement
+
+{What is the issue and why does it matter?}
+
+## Decision Drivers
+
+- {Driver 1}
+- {Driver 2}
+
+## Considered Options
+
+1. {Option 1}
+2. {Option 2}
+
+## Decision Outcome
+
+Chosen option: "{Option N}", because {justification}.
+
+### Consequences
+
+- **Good**: {positive consequence}
+- **Bad**: {negative consequence}
+```
+
+ADRs are append-only — when a decision is reversed, write a new ADR that
+supersedes the old one rather than editing it.
 
 ## Troubleshooting
 
