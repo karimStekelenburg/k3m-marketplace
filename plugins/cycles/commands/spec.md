@@ -14,9 +14,8 @@ The user provides a milestone identifier (e.g., "v0.2", "Canvas Viewport") or as
 ## Backend
 
 Detect backend and source it:
-```!
-source "$CLAUDE_PLUGIN_ROOT/scripts/detect-backend.sh"
-source "$K3M_BACKEND_SCRIPT"
+```
+source "$CLAUDE_PLUGIN_ROOT/scripts/detect-backend.sh" && source "$K3M_BACKEND_SCRIPT"
 ```
 
 ## Workflow

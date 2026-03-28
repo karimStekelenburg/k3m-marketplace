@@ -15,27 +15,14 @@ Run a complete spec-to-verified implementation cycle. This is the orchestrator t
 
 ## Backend Detection
 
-Before starting, detect which backend to use:
+Before starting, detect which backend to use. Run this as a single Bash command:
 
-```!
-source "$CLAUDE_PLUGIN_ROOT/scripts/detect-backend.sh"
-echo "Backend: $K3M_BACKEND"
+```
+source "$CLAUDE_PLUGIN_ROOT/scripts/detect-backend.sh" && source "$K3M_BACKEND_SCRIPT" && source "$K3M_SCRIPTS/state-machine.sh" && echo "Backend: $K3M_BACKEND"
 ```
 
 - **`fs`** (default, local): Reads/writes `docs/specs/`, `docs/plans/`, `docs/tracking/`, `docs/ROADMAP.md`
 - **`github`** (CI / GitHub Actions): Reads/writes via GitHub API — specs, plans, and trackers stored as marked comments on milestone issues. State tracked via issue labels.
-
-Source the appropriate backend script:
-```!
-source "$CLAUDE_PLUGIN_ROOT/scripts/backend-${K3M_BACKEND}.sh"
-```
-
-## State Machine
-
-Every phase transition must be validated. Source the state machine:
-```!
-source "$CLAUDE_PLUGIN_ROOT/scripts/state-machine.sh"
-```
 
 Valid transitions:
 ```

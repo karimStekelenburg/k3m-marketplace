@@ -15,9 +15,8 @@ Post-cycle retrospective that reviews automation performance and self-improves.
 
 ## Backend
 
-```!
-source "$CLAUDE_PLUGIN_ROOT/scripts/detect-backend.sh"
-source "$K3M_BACKEND_SCRIPT"
+```
+source "$CLAUDE_PLUGIN_ROOT/scripts/detect-backend.sh" && source "$K3M_BACKEND_SCRIPT"
 ```
 
 ## Workflow
