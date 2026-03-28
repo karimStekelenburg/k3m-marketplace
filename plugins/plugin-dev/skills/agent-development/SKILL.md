@@ -176,6 +176,54 @@ hooks:
 - Temporary hooks that should only apply during this agent's execution
 - Scoping hook behavior to a particular autonomous task
 
+### effort (optional)
+
+Override the model effort level for this agent. Added in v2.1.78.
+
+**Values:** `low`, `medium`, `high`
+
+**Example:**
+```yaml
+effort: high
+```
+
+**When to use:**
+- `high` — Complex analysis, security audits, thorough code review
+- `medium` — Standard tasks (default behavior if omitted)
+- `low` — Quick lookups, simple transformations
+
+### maxTurns (optional)
+
+Limit the number of agentic turns the agent can take. Added in v2.1.78.
+
+**Format:** Number
+
+**Example:**
+```yaml
+maxTurns: 10
+```
+
+**When to use:**
+- Prevent runaway agents on open-ended tasks
+- Budget-constrained workflows
+- Quick investigative agents that should stay focused
+
+### disallowedTools (optional)
+
+Tools to explicitly exclude from the agent, even if they would otherwise be available. Added in v2.1.78.
+
+**Format:** Array of tool name strings
+
+**Example:**
+```yaml
+disallowedTools: ["Bash", "Write"]
+```
+
+**Use cases:**
+- Read-only analysis agents that must not modify files
+- Agents scoped to specific capabilities
+- Complements `tools` allow-list (use `tools` to allow, `disallowedTools` to block)
+
 ### tools (optional)
 
 Restrict agent to specific tools.
@@ -391,7 +439,10 @@ Output: [What to provide]
 | description | Yes | Text + examples | Use when... <example>... |
 | model | Yes | inherit/sonnet/opus/haiku | inherit |
 | color | Yes | Color name | blue |
+| effort | No | low/medium/high | high |
+| maxTurns | No | Number | 10 |
 | tools | No | Array of tool names | ["Read", "Grep"] |
+| disallowedTools | No | Array of tool names | ["Bash", "Write"] |
 | initialPrompt | No | String | "Read CLAUDE.md first." |
 | hooks | No | Hook event map | {PreToolUse: [...]} |
 
