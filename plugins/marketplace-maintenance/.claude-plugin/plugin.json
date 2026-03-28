@@ -1,0 +1,10 @@
+{
+  "name": "marketplace-maintenance",
+  "description": "K3M marketplace infrastructure: plugin registration, scope validation, duplication detection, shared reference doc management, feedback capture and optimization, staleness detection.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Karim",
+    "email": "me@k3m.sh"
+  },
+  "keywords": ["marketplace", "registry", "scope-validation", "duplication-detection", "feedback", "maintenance"]
+}

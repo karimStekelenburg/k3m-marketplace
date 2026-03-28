@@ -1,0 +1,230 @@
+# K3M Marketplace Plugin Registry
+# This file is the single source of truth for what plugins exist and what they own.
+# The marketplace-maintenance plugin reads this file to validate scope and detect duplication.
+
+plugins:
+  marketplace-maintenance:
+    description: >
+      Marketplace infrastructure: plugin registration, scope validation,
+      duplication detection, shared reference doc management, feedback
+      capture and optimization, staleness detection.
+    version: "0.1.0"
+    scope:
+      keywords:
+        - marketplace
+        - registry
+        - scope-validation
+        - duplication-detection
+        - feedback
+        - optimization
+        - shared-references
+        - staleness
+        - reference-update
+        - organization
+      owns:
+        - "Plugin registration and deregistration"
+        - "Cross-plugin instruction placement validation"
+        - "Duplication detection across plugins"
+        - "Shared reference doc management at marketplace root"
+        - "Feedback capture and storage"
+        - "Feedback-driven optimization passes"
+        - "Staleness detection and reference doc updates"
+      does_not_own:
+        - "Plugin creation scaffolding (belongs to plugin-dev)"
+        - "Skill/command/agent/hook authoring guidance (belongs to plugin-dev)"
+        - "Autonomous plugin-dev syncing with Claude Code docs (belongs to plugin-dev-sync)"
+        - "Domain-specific skill content"
+    components:
+      skills:
+        - scope-validation
+        - duplication-detection
+      commands:
+        - register
+        - feedback
+        - check-staleness
+        - update-refs
+        - optimize
+      agents:
+        - scope-reviewer
+
+  plugin-dev-sync:
+    description: >
+      Autonomous plugin-dev maintenance: discovers Claude Code features from
+      official and community sources, diffs against plugin-dev, auto-patches,
+      and creates PRs with full reports.
+    version: "0.1.0"
+    scope:
+      keywords:
+        - sync
+        - autonomous
+        - maintenance
+        - discovery
+        - patch
+        - plugin-dev-sync
+        - claude-code-docs
+      owns:
+        - "Autonomous discovery of Claude Code features from docs and GitHub"
+        - "Diffing discovered features against plugin-dev content"
+        - "Automated patching and PR creation for plugin-dev"
+        - "Resource list management (data/resources.json)"
+        - "Issue reporting and root-cause analysis for plugin-dev failures"
+      does_not_own:
+        - "Marketplace organization (belongs to marketplace-maintenance)"
+        - "Plugin scaffolding (belongs to plugin-dev)"
+    components:
+      skills:
+        - sync
+        - resource-management
+        - report-issue
+      commands: []
+      agents:
+        - discovery-crawler
+        - diff-reviewer
+        - issue-analyst
+        - patch-applier
+
+  plugin-dev:
+    description: >
+      Plugin development toolkit: scaffolding new plugins, skill/command/agent/hook
+      development guidance, MCP integration, LSP integration, evaluation infrastructure.
+    version: "0.1.0"
+    scope:
+      keywords:
+        - plugin-creation
+        - scaffolding
+        - skill-development
+        - command-development
+        - agent-development
+        - hook-development
+        - mcp-integration
+        - lsp-integration
+        - evaluation
+        - testing
+        - plugin-structure
+        - plugin-settings
+      owns:
+        - "Creating new plugin scaffolds with standard structure"
+        - "Skill authoring guidance and evaluation"
+        - "Command development patterns and frontmatter"
+        - "Agent development patterns and frontmatter"
+        - "Hook development patterns for all 22 event types"
+        - "MCP server integration guidance"
+        - "LSP server integration guidance"
+        - "Plugin validation and testing workflows"
+        - "Evaluation infrastructure for skill descriptions"
+      does_not_own:
+        - "Marketplace organization and registry (belongs to marketplace-maintenance)"
+        - "Feedback processing and optimization (belongs to marketplace-maintenance)"
+        - "Staleness detection and reference updates (belongs to marketplace-maintenance)"
+        - "Autonomous plugin-dev syncing (belongs to plugin-dev-sync)"
+        - "Domain-specific plugin content"
+    components:
+      skills:
+        - plugin-structure
+        - skill-development
+        - command-development
+        - agent-development
+        - hook-development
+        - mcp-integration
+        - lsp-integration
+        - plugin-settings
+      commands:
+        - create-plugin
+      agents:
+        - agent-creator
+        - skill-reviewer
+        - plugin-validator
+
+  cycles:
+    description: >
+      Spec-driven implementation cycle management — create specs, plan work,
+      track implementation, run verification gates, write tests, verify UI, retro.
+    version: "0.1.0"
+    scope:
+      keywords:
+        - spec
+        - cycle
+        - plan
+        - roadmap
+        - retro
+        - verification
+        - test-writing
+        - ui-verify
+      owns:
+        - "Spec creation and refinement workflows"
+        - "Implementation planning and task tracking"
+        - "Verification gates and automated review"
+        - "Test writing and UI verification agents"
+        - "Retro and continuous improvement workflows"
+      does_not_own:
+        - "Plugin scaffolding (belongs to plugin-dev)"
+        - "Marketplace organization (belongs to marketplace-maintenance)"
+    components:
+      skills: []
+      commands:
+        - spec
+        - plan
+        - cycle
+        - roadmap
+        - retro
+        - spec-tracker
+        - spec-status
+      agents:
+        - verification-gate
+        - code-reviewer
+        - test-writer
+        - ui-verifier
+
+  rup-lifecycle:
+    description: >
+      Rational Unified Process lifecycle management — RUP phases, artifact
+      templates, gate validation, iteration planning, state machine.
+    version: "0.1.0"
+    scope:
+      keywords:
+        - rup
+        - lifecycle
+        - phases
+        - artifacts
+        - iteration
+        - gate
+        - inception
+        - elaboration
+        - construction
+        - transition
+      owns:
+        - "RUP phase management and gate validation"
+        - "RUP artifact templates (vision, requirements, architecture, etc.)"
+        - "Iteration planning and assessment"
+      does_not_own:
+        - "General spec/cycle management (belongs to cycles)"
+        - "Plugin scaffolding (belongs to plugin-dev)"
+    components:
+      skills:
+        - rup-lifecycle
+      commands:
+        - rup-init
+        - rup-gate
+        - rup-status
+      agents:
+        - artifact-writer
+
+  core-devtools:
+    description: >
+      Starter/example plugin demonstrating marketplace structure.
+    version: "0.1.0"
+    scope:
+      keywords:
+        - core
+        - devtools
+        - example
+        - starter
+      owns:
+        - "Core devtools example functionality"
+      does_not_own: []
+    components:
+      skills:
+        - core-devtools
+      commands:
+        - core-devtools
+      agents: []
