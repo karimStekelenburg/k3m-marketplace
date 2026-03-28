@@ -47,15 +47,64 @@ Execute bash commands for deterministic checks:
 {
   "type": "command",
   "command": "bash ${CLAUDE_PLUGIN_ROOT}/scripts/validate.sh",
-  "timeout": 60
+  "timeout": 600,
+  "async": false,
+  "shell": "bash"
 }
 ```
+
+**Key fields:**
+- `command` — Shell command to execute
+- `timeout` — Seconds before hook is killed (default: **600s**)
+- `async` — If true, hook runs without blocking Claude (default: false)
+- `shell` — `bash` (default) or `powershell` for cross-platform hooks
 
 **Use for:**
 - Fast deterministic validations
 - File system operations
 - External tool integrations
 - Performance-critical checks
+
+### HTTP Hooks
+
+POST a JSON payload to a URL:
+
+```json
+{
+  "type": "http",
+  "url": "https://hooks.example.com/claude-events",
+  "headers": {
+    "Authorization": "Bearer ${WEBHOOK_TOKEN}"
+  },
+  "allowedEnvVars": ["WEBHOOK_TOKEN"]
+}
+```
+
+**Key fields:**
+- `url` — Endpoint that receives a POST with the hook event JSON body
+- `headers` — Static headers merged into the request
+- `allowedEnvVars` — Environment variables the hook is permitted to read
+
+**Use for:**
+- Sending audit events to external services
+- Triggering CI/CD webhooks
+- Integrating with monitoring systems
+
+### Agent Hooks
+
+Spawn a subagent to handle the event. The subagent has access to Read, Grep, and Glob tools:
+
+```json
+{
+  "type": "agent",
+  "prompt": "Review the file that was just written for security issues. If you find any, return exit code 2 with a description."
+}
+```
+
+**Use for:**
+- Complex analysis that requires reading multiple files
+- Context-aware decisions that benefit from tool access
+- Situations where a prompt hook needs file system access
 
 ## Hook Configuration Formats
 
@@ -117,6 +166,51 @@ Execute bash commands for deterministic checks:
 - This is the **settings format**
 
 **Important:** The examples below show the hook event structure that goes inside either format. For plugin hooks.json, wrap these in `{"hooks": {...}}`.
+
+## Common Handler Fields
+
+These optional fields apply to all handler types (`command`, `prompt`, `http`, `agent`):
+
+| Field | Type | Default | Description |
+|-------|------|---------|-------------|
+| `timeout` | number | 600 (cmd), 30 (prompt), 60 (agent) | Seconds before hook is killed |
+| `statusMessage` | string | — | Custom spinner text shown while hook executes |
+| `if` | string | — | Permission rule syntax filter, e.g. `"Bash(git *)"`. Tool events only. (v2.1.85) |
+| `once` | boolean | false | If true, hook runs only once per session. Skills only. |
+
+**Example with common fields:**
+```json
+{
+  "type": "command",
+  "command": "bash ${CLAUDE_PLUGIN_ROOT}/scripts/validate.sh",
+  "timeout": 30,
+  "statusMessage": "Validating file...",
+  "if": "Write(src/**)"
+}
+```
+
+**`if` field syntax** uses permission rule format — same as tool permission rules. Allows conditional hook execution without wrapper scripts:
+```json
+{
+  "matcher": "Bash",
+  "hooks": [
+    {
+      "type": "command",
+      "command": "bash ${CLAUDE_PLUGIN_ROOT}/scripts/git-check.sh",
+      "if": "Bash(git push*)"
+    }
+  ]
+}
+```
+
+**`once` field** (skills only) — runs setup hooks exactly once per session:
+```json
+{
+  "type": "command",
+  "command": "bash ${CLAUDE_PLUGIN_ROOT}/scripts/setup.sh",
+  "once": true
+}
+```
 
 ## Hook Events
 
@@ -239,12 +333,19 @@ Execute when user submits a prompt. Use to add context, validate, or block promp
 
 Execute when Claude Code session begins. Use to load context and set environment.
 
-**Example:**
+**Matcher values** for SessionStart distinguish session types:
+- `startup` — Fresh Claude Code launch
+- `resume` — Resuming an existing session
+- `clear` — After `/clear` command
+- `compact` — After compaction
+- `*` — All session starts
+
+**Example (fresh-start only setup):**
 ```json
 {
   "SessionStart": [
     {
-      "matcher": "*",
+      "matcher": "startup",
       "hooks": [
         {
           "type": "command",
@@ -271,9 +372,61 @@ Execute when session ends. Use for cleanup, logging, and state preservation.
 
 Execute before context compaction. Use to add critical information to preserve.
 
+### PostCompact
+
+Execute after context compaction completes. Use to reload critical context.
+
 ### Notification
 
 Execute when Claude sends notifications. Use to react to user notifications.
+
+### PostToolUseFailure
+
+Execute when a tool call fails. Use to handle errors, log failures, or notify users.
+
+### PermissionRequest
+
+Execute when Claude requests permission for an action. Use to auto-approve or log permission requests.
+
+### InstructionsLoaded
+
+Execute after Claude loads instructions (CLAUDE.md files). Use to inject additional context.
+
+### StopFailure
+
+Execute when a Stop hook blocks continuation but the agent cannot proceed. Use to handle stuck states.
+
+### SubagentStart
+
+Execute when a subagent starts. Mirror of SubagentStop for setup work.
+
+### TaskCreated / TaskCompleted
+
+Execute when background tasks are created or completed. Use to track async operations.
+
+### TeammateIdle
+
+Execute when a teammate agent becomes idle. Use in multi-agent coordination.
+
+### ConfigChange
+
+Execute when Claude Code configuration changes. Use to react to settings updates.
+
+### CwdChanged
+
+Execute when the working directory changes. Use to update context for new directories.
+
+### FileChanged
+
+Execute when files change on disk (outside of Claude's edits). Use to react to external file system changes.
+
+### WorktreeCreate / WorktreeRemove
+
+Execute when git worktrees are created or removed. Use in multi-worktree workflows.
+
+### Elicitation / ElicitationResult
+
+Execute when an MCP server requests structured user input (Elicitation) and when the user responds (ElicitationResult). Use to intercept or log interactive MCP workflows.
 
 ## Hook Output Format
 
@@ -488,7 +641,7 @@ cd $CLAUDE_PROJECT_DIR
 }
 ```
 
-**Defaults:** Command hooks (60s), Prompt hooks (30s)
+**Defaults:** Command hooks (600s), Prompt hooks (30s), Agent hooks (60s)
 
 ## Performance Considerations
 
@@ -635,13 +788,29 @@ echo "$output" | jq .
 |-------|------|---------|
 | PreToolUse | Before tool | Validation, modification |
 | PostToolUse | After tool | Feedback, logging |
+| PostToolUseFailure | Tool fails | Error handling, logging |
+| PermissionRequest | Permission needed | Auto-approve, audit |
 | UserPromptSubmit | User input | Context, validation |
 | Stop | Agent stopping | Completeness check |
+| StopFailure | Stop hook blocks agent | Handle stuck states |
+| SubagentStart | Subagent starts | Setup work |
 | SubagentStop | Subagent done | Task validation |
 | SessionStart | Session begins | Context loading |
 | SessionEnd | Session ends | Cleanup, logging |
+| InstructionsLoaded | Instructions loaded | Inject context |
 | PreCompact | Before compact | Preserve context |
+| PostCompact | After compact | Reload context |
 | Notification | User notified | Logging, reactions |
+| TaskCreated | Task created | Track async work |
+| TaskCompleted | Task completed | Post-task actions |
+| TeammateIdle | Teammate idle | Multi-agent coord |
+| ConfigChange | Config changes | React to settings |
+| CwdChanged | Directory changes | Update context |
+| FileChanged | Files change on disk | React to external edits |
+| WorktreeCreate | Worktree created | Multi-worktree setup |
+| WorktreeRemove | Worktree removed | Multi-worktree cleanup |
+| Elicitation | MCP requests input | Intercept/log |
+| ElicitationResult | User responds to MCP | Post-response actions |
 
 ### Best Practices
 
