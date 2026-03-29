@@ -30,15 +30,19 @@ Key rules:
 
 ## Component Reference
 
-See `docs/cheatsheet-*.md` for complete field references:
-- `cheatsheet-plugin.md` — plugin.json schema
-- `cheatsheet-skill.md` — SKILL.md frontmatter
-- `cheatsheet-agent.md` — AGENT.md frontmatter
-- `cheatsheet-hooks.md` — hooks.json schema
-- `cheatsheet-mcp.md` — .mcp.json schema
-- `cheatsheet-lsp.md` — .lsp.json / lspServers schema
-- `cheatsheet-commands.md` — command .md frontmatter
-- `cheatsheet-output-styles.md` — output style .md frontmatter
+Do NOT rely on bundled documentation or training data for Claude Code capabilities.
+Always fetch current docs before answering capability questions:
+
+```bash
+# Discover all doc pages (bird's eye view)
+firecrawl map https://code.claude.com/docs/en/
+
+# Optionally narrow with search
+firecrawl map https://code.claude.com/docs/en/ --search "<topic>"
+
+# Fetch specific page
+firecrawl scrape <url> -f markdown -o .firecrawl/<topic>.md
+```
 
 ## Marketplace JSON
 

@@ -1,0 +1,77 @@
+[
+  {
+    "query": "Can I put agents in .claude/ without a plugin?",
+    "expected_contains": ["yes"],
+    "must_not_contain": ["requires a plugin", "only plugins", "not supported"],
+    "grounding_check": true,
+    "category": "capability-boundary"
+  },
+  {
+    "query": "What requires a plugin vs standalone .claude/ directory?",
+    "expected_contains": ["hooks"],
+    "must_not_contain": ["agents require a plugin", "skills require a plugin"],
+    "grounding_check": true,
+    "category": "capability-boundary"
+  },
+  {
+    "query": "What hook events does Claude Code support?",
+    "expected_contains": ["PreToolUse", "PostToolUse", "Stop", "SessionStart"],
+    "grounding_check": true,
+    "category": "feature-knowledge"
+  },
+  {
+    "query": "Does plugin.json support a 'dependencies' field?",
+    "grounding_check": true,
+    "category": "fabrication-detection",
+    "note": "Tests whether it invents features that don't exist"
+  },
+  {
+    "query": "What transport types does MCP support in Claude Code?",
+    "expected_contains": ["stdio", "http"],
+    "grounding_check": true,
+    "category": "feature-knowledge"
+  },
+  {
+    "query": "How do I create an output style for a plugin?",
+    "grounding_check": true,
+    "category": "feature-knowledge",
+    "note": "Tests awareness of output-styles as a component type"
+  },
+  {
+    "query": "What frontmatter fields are available for SKILL.md?",
+    "expected_contains": ["name", "description"],
+    "grounding_check": true,
+    "category": "feature-knowledge"
+  },
+  {
+    "query": "Can hooks return JSON to modify Claude's behavior?",
+    "expected_contains": ["yes"],
+    "grounding_check": true,
+    "category": "capability-boundary"
+  },
+  {
+    "query": "What is the ${CLAUDE_PLUGIN_ROOT} variable?",
+    "expected_contains": ["plugin"],
+    "grounding_check": true,
+    "category": "feature-knowledge"
+  },
+  {
+    "query": "Can Claude Code plugins include LSP servers?",
+    "expected_contains": ["yes"],
+    "must_not_contain": ["not supported", "cannot"],
+    "grounding_check": true,
+    "category": "capability-boundary"
+  },
+  {
+    "query": "What is the difference between prompt hooks and command hooks?",
+    "grounding_check": true,
+    "category": "feature-knowledge"
+  },
+  {
+    "query": "Does Claude Code support agent hooks that are scoped to an agent's lifetime?",
+    "expected_contains": ["yes"],
+    "grounding_check": true,
+    "category": "capability-boundary",
+    "note": "Tests knowledge of inline hooks in agent frontmatter"
+  }
+]
