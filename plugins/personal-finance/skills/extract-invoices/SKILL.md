@@ -1,14 +1,14 @@
 ---
-name: Extract Invoice Data
+name: extract-invoices
 description: Use when the user wants to extract invoice information from emails, process PDF attachments for invoice data, pull out amounts and IBANs from invoices, or parse invoice PDFs.
 version: 0.1.0
 argument-hint: "[--email-id ID | --all-pending] [--data-dir PATH]"
 allowed-tools: Bash
 ---
 
-Determine the data directory: use `--data-dir` if provided, otherwise default to `~/Documents/finance-data/`.
+Parse arguments from $ARGUMENTS. Determine the data directory: use `--data-dir` if provided, otherwise default to `~/Documents/finance-data/`.
 
-Determine the extraction scope from the user's arguments:
+Determine the extraction scope from the arguments:
 
 **If `--email-id ID` is given:**
 Run the extractor for that single email's attachment:

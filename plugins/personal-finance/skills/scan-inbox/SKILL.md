@@ -1,12 +1,12 @@
 ---
-name: Scan Inbox for Invoices
+name: scan-inbox
 description: Use when the user wants to scan Apple Mail for invoice emails, find invoice-related messages, check for new invoices, or search their mailbox for bills and payment requests.
 version: 0.1.0
 argument-hint: "[--days 90] [--data-dir PATH]"
 allowed-tools: Bash
 ---
 
-Determine the data directory: use the value passed via `--data-dir` if provided, otherwise default to `~/Documents/finance-data/`.
+Parse arguments from $ARGUMENTS. Determine the data directory: use the value passed via `--data-dir` if provided, otherwise default to `~/Documents/finance-data/`.
 
 Build the command arguments from whatever options the user supplied:
 - `--days N` controls how far back to search (default: 90 days if not specified)

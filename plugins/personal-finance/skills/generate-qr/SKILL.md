@@ -1,12 +1,12 @@
 ---
-name: Generate EPC Payment QR Codes
+name: generate-qr
 description: Use when the user wants to generate QR codes for unpaid invoices, create payment QR codes to scan with a banking app, or produce EPC QR codes for outstanding invoices.
 version: 0.1.0
 argument-hint: "[--invoice-id ID | --all-unpaid] [--data-dir PATH]"
 allowed-tools: Bash
 ---
 
-Determine the data directory: use `--data-dir` if provided, otherwise default to `~/Documents/finance-data/`.
+Parse arguments from $ARGUMENTS. Determine the data directory: use `--data-dir` if provided, otherwise default to `~/Documents/finance-data/`.
 
 Determine the generation scope:
 
