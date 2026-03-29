@@ -87,3 +87,4 @@ approved a bad change), it should:
 2. Patch the relevant agent prompt or skill instructions
 3. Include both plugin-dev and plugin-dev-sync changes in the same PR
 4. Explain the plugin-dev-sync fix in the PR report
+</description>

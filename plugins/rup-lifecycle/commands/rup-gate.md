@@ -43,3 +43,4 @@ Evaluate whether the current phase's exit criteria are met and decide whether to
 6. **If the gate fails**, do NOT offer to bypass or manually advance. List what needs to happen and offer to help complete the outstanding items.
 
 7. Be strict during gate evaluation. The gate exists to protect project quality. Do not rubber-stamp incomplete work.
+</next_phase></notes></phase>

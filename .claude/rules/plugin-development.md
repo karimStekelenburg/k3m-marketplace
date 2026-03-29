@@ -1,5 +1,4 @@
 ---
-globs: plugins/**
 ---
 
 # Plugin Development Rules

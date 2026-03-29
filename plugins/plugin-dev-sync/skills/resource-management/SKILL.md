@@ -1,6 +1,6 @@
 ---
 name: resource-management
-description: >-
+description: Use when user wants to This skill should be used when the user asks to "add a resource", "update resources", "check resource status", "add a documentation source", "add a Twitter account to track", or needs to manage the plugin-dev-sync resource list. Provides guidance for maintaining the master resources.json that drives the discovery pipeline.
   This skill should be used when the user asks to "add a resource", "update resources",
   "check resource status", "add a documentation source", "add a Twitter account to track",
   or needs to manage the plugin-dev-sync resource list. Provides guidance for maintaining

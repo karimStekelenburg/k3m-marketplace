@@ -413,3 +413,4 @@ Every component must meet these standards:
 ---
 
 **Begin with Phase 1: Discovery**
+</example>

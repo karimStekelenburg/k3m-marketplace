@@ -1,6 +1,6 @@
 ---
-name: RUP Lifecycle
-description: >-
+name: rup-lifecycle
+description: Use when user wants to This skill should be used when the user asks about "project lifecycle", "RUP process", "development phases", "inception", "elaboration", "construction", "transition", "milestone gate", "iteration planning", "artifact status", "cycle status", or when working within an active RUP development cycle. Provides the complete Rational Unified Process state machine, phase coordination, artifact tracking, and autonomous orchestration for iterative software development.
   This skill should be used when the user asks about "project lifecycle", "RUP process",
   "development phases", "inception", "elaboration", "construction", "transition",
   "milestone gate", "iteration planning", "artifact status", "cycle status",

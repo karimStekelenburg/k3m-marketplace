@@ -1,6 +1,6 @@
 ---
-name: Plugin Settings
-description: This skill should be used when the user asks about "plugin settings", "store plugin configuration", "user-configurable plugin", ".local.md files", "plugin state files", "read YAML frontmatter", "per-project plugin settings", or wants to make plugin behavior configurable. Documents the .claude/plugin-name.local.md pattern for storing plugin-specific configuration with YAML frontmatter and markdown content.
+name: plugin-settings
+description: Use when user wants to This skill should be used when the user asks about "plugin settings", "store plugin configuration", "user-configurable plugin", ".local.md files", "plugin state files", "read YAML frontmatter", "per-project plugin settings", or wants to make plugin behavior configurable. Documents the .claude/plugin-name.local.md pattern for storing plugin-specific configuration with YAML frontmatter and markdown content.
 version: 0.1.0
 ---
 
@@ -295,7 +295,7 @@ Provide template in plugin README:
 
 Create `.claude/my-plugin.local.md` in your project:
 
-\`\`\`markdown
+/`/`/`markdown
 ---
 enabled: true
 mode: standard
@@ -305,7 +305,7 @@ max_retries: 3
 # Plugin Configuration
 
 Your settings are active.
-\`\`\`
+/`/`/`
 
 After creating or editing, restart Claude Code for changes to take effect.
 ```
@@ -390,7 +390,7 @@ When writing settings files from user input:
 
 ```bash
 # Escape quotes in user input
-SAFE_VALUE=$(echo "$USER_INPUT" | sed 's/"/\\"/g')
+SAFE_VALUE=$(echo "$USER_INPUT" | sed 's/"///"/g')
 
 # Write to file
 cat > "$STATE_FILE" <<EOF

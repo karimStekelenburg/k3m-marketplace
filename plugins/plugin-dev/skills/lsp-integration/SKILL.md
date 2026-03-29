@@ -1,6 +1,6 @@
 ---
-name: LSP Integration
-description: This skill should be used when the user asks to "add LSP server", "configure language server", "add code intelligence", "set up go to definition", "configure find references", "add diagnostics", "language server protocol in plugin", or needs guidance on .lsp.json configuration, language server setup, or LSP integration in Claude Code plugins.
+name: lsp-integration
+description: Use when user wants to This skill should be used when the user asks to "add LSP server", "configure language server", "add code intelligence", "set up go to definition", "configure find references", "add diagnostics", "language server protocol in plugin", or needs guidance on .lsp.json configuration, language server setup, or LSP integration in Claude Code plugins.
 version: 0.1.0
 ---
 

@@ -1,6 +1,6 @@
 ---
-name: Scope Validation
-description: This skill should be used when the user asks to "add a skill to a plugin", "move an instruction", "check if this belongs here", "validate placement", or when Claude is about to add a new skill, command, agent, hook, or instruction to any plugin in the K3M marketplace. Validates that content is being placed in the correct plugin based on declared scope ownership.
+name: scope-validation
+description: Use when user wants to This skill should be used when the user asks to "add a skill to a plugin", "move an instruction", "check if this belongs here", "validate placement", or when Claude is about to add a new skill, command, agent, hook, or instruction to any plugin in the K3M marketplace. Validates that content is being placed in the correct plugin based on declared scope ownership.
 version: 0.1.0
 ---
 

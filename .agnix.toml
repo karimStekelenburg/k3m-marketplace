@@ -1,0 +1,16 @@
+target = "claude-code"
+severity = "Warning"
+
+exclude = [
+  "docs/human/**",
+  "plugins/plugin-dev-sync/data/**",
+  "shared/**",
+]
+
+[rules]
+skills = true
+hooks = true
+agents = true
+memory = true
+plugins = true
+mcp = true

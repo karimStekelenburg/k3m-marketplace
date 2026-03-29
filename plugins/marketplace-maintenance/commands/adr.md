@@ -135,3 +135,4 @@ Valid statuses: `proposed`, `accepted`, `superseded`, `deprecated`.
 Individual plugins should maintain their own ADRs in `docs/decisions/` within
 the plugin directory. This command is for marketplace-wide decisions only. See
 the plugin-dev plugin-structure skill for plugin-level ADR guidance.
+</NNNN></title>

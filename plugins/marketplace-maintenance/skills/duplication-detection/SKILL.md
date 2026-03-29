@@ -1,6 +1,6 @@
 ---
-name: Duplication Detection
-description: This skill should be used when the user asks to "check for duplicates", "find duplicate instructions", "audit marketplace for duplication", "consolidate instructions", or when a new skill or instruction is being added that might already exist elsewhere in the K3M marketplace. Detects and proposes consolidation of duplicated instructions across plugins.
+name: duplication-detection
+description: Use when user wants to This skill should be used when the user asks to "check for duplicates", "find duplicate instructions", "audit marketplace for duplication", "consolidate instructions", or when a new skill or instruction is being added that might already exist elsewhere in the K3M marketplace. Detects and proposes consolidation of duplicated instructions across plugins.
 version: 0.1.0
 ---
 
