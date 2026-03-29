@@ -1,7 +1,7 @@
 ---
 name: plugin-development
-description: Use when user wants to This skill should be used when the user asks to "create a plugin", "scaffold a plugin", "understand plugin structure", "organize plugin components", "set up plugin.json", "configure plugin settings", "add LSP server", "configure language server", or needs guidance on plugin architecture, directory layout, manifest configuration, auto-discovery, or portable path references.
-  This skill should be used when the user asks to "create a plugin",
+description: >-
+  Use when the user asks to "create a plugin",
   "scaffold a plugin", "understand plugin structure", "organize plugin
   components", "set up plugin.json", "configure plugin settings",
   "add LSP server", "configure language server", or needs guidance on
