@@ -1,0 +1,11 @@
+Datum,Naam / Omschrijving,Rekening,Tegenrekening,Code,Af of Bij,Bedrag (EUR),Mutatiesoort,Mededelingen
+02-01-2024,Werkgever BV,NL21INGB0001234567,NL91ABNA0417164300,GT,Bij,"2.800,00",Salaris,Salaris januari 2024
+05-01-2024,WebHosting BV,NL21INGB0001234567,NL56RABO0149842453,OV,Af,"120,35",Internetbankieren,Factuur WHB-2024-001 webhosting januari
+10-01-2024,Spotify AB,NL21INGB0001234567,NL24RABO0300065264,OV,Af,"9,99",Internetbankieren,Spotify Premium abonnement
+15-01-2024,Verhuurder Rotterdam BV,NL21INGB0001234567,NL55RABO0131610772,OV,Af,"950,00",Internetbankieren,Huur januari 2024
+20-01-2024,Belastingdienst,NL21INGB0001234567,NL86INGB0002445588,OV,Af,"245,00",Internetbankieren,Voorlopige aanslag IB 2024
+22-01-2024,Albert Heijn BV,NL21INGB0001234567,NL71ABNA0456789012,BA,Af,"84,67",Betaalautomaat,Aankoop Albert Heijn
+25-01-2024,NS Reizigers,NL21INGB0001234567,NL34INGB0000036727,OV,Af,"43,20",Internetbankieren,OV chipkaart bijladen januari
+28-01-2024,Janssen Kleding,NL21INGB0001234567,NL39RABO0300819154,OV,Af,"59,95",Internetbankieren,Online bestelling 28012024
+01-02-2024,Familie De Boer,NL21INGB0001234567,NL93ABNA0584038959,OV,Bij,"75,00",Overschrijving,Terugbetaling etentje
+03-02-2024,Gemeente Amsterdam,NL21INGB0001234567,NL68INGB0009876543,OV,Af,"180,00",Internetbankieren,Gemeentebelasting 2024 Q1

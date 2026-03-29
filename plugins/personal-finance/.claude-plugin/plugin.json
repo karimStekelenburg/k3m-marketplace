@@ -1,0 +1,8 @@
+{
+  "name": "personal-finance",
+  "version": "0.1.0",
+  "description": "Personal invoice pipeline: scan Apple Mail, parse bank statements, match payments, generate EPC QR codes",
+  "author": {
+    "name": "Karim Stekelenburg"
+  }
+}

@@ -67,6 +67,17 @@
       },
       "source": "./plugins/cycles",
       "category": "workflow"
+    },
+    {
+      "name": "personal-finance",
+      "description": "Personal invoice pipeline — scan Apple Mail for invoices, parse Dutch bank statements (ABN AMRO, ING, Bunq), match payments deterministically, generate EPC QR codes, and view everything in datasette",
+      "version": "0.1.0",
+      "author": {
+        "name": "Karim Stekelenburg"
+      },
+      "source": "./plugins/personal-finance",
+      "category": "productivity",
+      "enabled": false
     }
   ]
 }
