@@ -1,12 +1,12 @@
 ---
-name: View Finance Data
+name: view-data
 description: Use when the user wants to view the finance dashboard, see all invoices, check payment status overview, browse transactions, open the data viewer, or launch datasette.
 version: 0.1.0
 argument-hint: "[--summary-only] [--data-dir PATH]"
 allowed-tools: Bash
 ---
 
-Determine the data directory: use `--data-dir` if provided, otherwise default to `~/Documents/finance-data/`.
+Parse arguments from $ARGUMENTS. Determine the data directory: use `--data-dir` if provided, otherwise default to `~/Documents/finance-data/`.
 
 Run the export/viewer script:
 

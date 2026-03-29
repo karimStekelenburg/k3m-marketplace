@@ -1,12 +1,12 @@
 ---
-name: Import Bank Statements
+name: import-statements
 description: Use when the user wants to import bank statements, parse MT940 files, load CSV exports from ABN AMRO, ING or Bunq, or add transactions to the finance database.
 version: 0.1.0
-argument-hint: "<file_or_directory> [--bank abn_amro|ing|bunq] [--data-dir PATH]"
+argument-hint: "FILE_OR_DIR [--bank abn_amro|ing|bunq] [--data-dir PATH]"
 allowed-tools: Bash
 ---
 
-Determine the data directory: use `--data-dir` if provided, otherwise default to `~/Documents/finance-data/`.
+Parse arguments from $ARGUMENTS. Determine the data directory: use `--data-dir` if provided, otherwise default to `~/Documents/finance-data/`.
 
 Accept the positional argument as a file path or directory path containing bank statement files. If no path is given, ask the user to provide one before proceeding.
 

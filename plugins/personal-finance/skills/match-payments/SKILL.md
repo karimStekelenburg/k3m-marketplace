@@ -1,12 +1,12 @@
 ---
-name: Match Invoices to Payments
+name: match-payments
 description: Use when the user wants to match invoices against bank transactions, find which invoices have been paid, check payment status, or run the payment matching engine.
 version: 0.1.0
 argument-hint: "[--data-dir PATH] [--dry-run]"
 allowed-tools: Bash
 ---
 
-Determine the data directory: use `--data-dir` if provided, otherwise default to `~/Documents/finance-data/`.
+Parse arguments from $ARGUMENTS. Determine the data directory: use `--data-dir` if provided, otherwise default to `~/Documents/finance-data/`.
 
 Run the matching engine, passing `--dry-run` if the user requested it (dry-run shows what would be matched without writing to the database):
 
