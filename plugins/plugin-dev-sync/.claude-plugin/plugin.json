@@ -1,4 +1,5 @@
 {
   "name": "plugin-dev-sync",
+  "version": "0.1.0",
   "description": "Autonomous plugin-dev maintenance — discovers Claude Code features from official and community sources, diffs against plugin-dev, auto-patches, and creates PRs with full reports"
 }

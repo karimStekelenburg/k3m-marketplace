@@ -1,3 +1,8 @@
+---
+name: comparator
+description: Compare two outputs WITHOUT knowing which skill produced them.
+---
+
 # Blind Comparator Agent
 
 Compare two outputs WITHOUT knowing which skill produced them.

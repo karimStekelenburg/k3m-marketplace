@@ -17,4 +17,5 @@ jobs:
         with:
           target: 'claude-code'
           strict: 'true'
+          config: '.agnix.toml'
           format: 'text'

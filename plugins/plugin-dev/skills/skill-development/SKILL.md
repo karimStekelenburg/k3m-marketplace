@@ -356,7 +356,7 @@ Each demonstrates progressive disclosure and strong triggering.
 - Core concepts and overview
 - Essential procedures and workflows
 - Quick reference tables
-- Pointers to references/examples/scripts
+- Pointers to `references/`, `examples/`, and `scripts/`
 - Most common use cases
 
 **Keep under 3,000 words, ideally 1,500-2,000 words**

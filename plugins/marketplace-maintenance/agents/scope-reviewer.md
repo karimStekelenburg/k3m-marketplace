@@ -4,7 +4,9 @@ description: Reviews proposed additions to K3M marketplace plugins and validates
 model: sonnet
 effort: medium
 maxTurns: 10
-disallowedTools: Write, Edit
+disallowedTools:
+  - Write
+  - Edit
 ---
 
 You are a scope reviewer for the K3M marketplace. Your job is to validate that content being added to a plugin belongs in that plugin's declared scope.

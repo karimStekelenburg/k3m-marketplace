@@ -1,20 +1,12 @@
 ---
 name: report-issue
 description: >-
-  This skill should be used when the user says "plugin-dev got this wrong",
+  Use when the user says "plugin-dev got this wrong",
   "plugin-dev is missing X", "report an issue with plugin-dev",
   "plugin-dev told me the wrong thing", or invokes /plugin-dev-sync:report-issue.
   Provides guided feedback collection and triggers automatic root-cause
   analysis, patching, and PR creation.
-allowed-tools:
-  - Read
-  - Write
-  - Edit
-  - Bash
-  - Glob
-  - Grep
-  - Agent
-  - WebFetch
+allowed-tools: Read, Write, Edit, Bash, Glob, Grep, Agent, WebFetch
 argument-hint: "<description of what went wrong>"
 ---
 
@@ -25,7 +17,8 @@ fix pipeline that patches both plugin-dev and plugin-dev-sync if needed.
 
 ## Feedback Collection
 
-When invoked, gather the following from the user's report:
+If $ARGUMENTS is provided, use it as the initial issue description.
+Otherwise, gather the following from the user's report:
 
 1. **What happened**: What did plugin-dev do wrong or miss?
 2. **What was expected**: What should it have done instead?

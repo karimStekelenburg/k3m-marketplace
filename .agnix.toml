@@ -1,4 +1,4 @@
-target = "claude-code"
+tools = ["claude-code"]
 severity = "Warning"
 
 exclude = [
@@ -14,3 +14,14 @@ agents = true
 memory = true
 plugins = true
 mcp = true
+
+disabled_rules = [
+  "CC-SK-008",  # "Unknown tool 'Agent'" — Agent is a valid Claude Code tool
+  "XP-003",     # "Hard-coded .claude/ path" — correct for a Claude Code plugin toolkit
+  "XP-006",     # "Multiple instruction layers" — intentional (root + .claude/ CLAUDE.md)
+  "CC-AG-019",  # "Unknown agent field 'color'" — valid Claude Code field
+  "CC-SK-017",  # "Unknown skill field 'version'" — valid Claude Code field
+  "AS-012",     # "Skill exceeds 500 lines" — our skills are comprehensive references
+  "CC-SK-009",  # "Too many dynamic injections" — command-development is legitimately complex
+  "CC-SK-007",  # "Unrestricted Bash access" — sync/report-issue skills need full Bash
+]

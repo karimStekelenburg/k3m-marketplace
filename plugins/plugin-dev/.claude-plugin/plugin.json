@@ -1,5 +1,6 @@
 {
   "name": "plugin-dev",
+  "version": "0.2.0",
   "description": "Plugin development toolkit — scaffolding, validation, skill review, and best-practice guidance for building Claude Code plugins",
   "author": {
     "name": "k3m.sh",

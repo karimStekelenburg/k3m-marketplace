@@ -1,21 +1,12 @@
 ---
 name: sync
 description: >-
-  This skill should be used when the user asks to "sync plugin-dev",
+  Use when the user asks to "sync plugin-dev",
   "update plugin-dev from latest docs", "run plugin-dev-sync", or invokes
   /plugin-dev-sync:sync. Orchestrates the full autonomous pipeline: fetch resources,
   discover features, diff against plugin-dev, review, apply patches, commit,
   and create a PR with a full report.
-allowed-tools:
-  - Read
-  - Write
-  - Edit
-  - Bash
-  - Glob
-  - Grep
-  - Agent
-  - WebFetch
-  - WebSearch
+allowed-tools: Read, Write, Edit, Bash, Glob, Grep, Agent, WebFetch, WebSearch
 argument-hint: "[--dry-run] [--category official-docs|github|social|community]"
 ---
 
@@ -81,6 +72,8 @@ Launch the **diff-reviewer** agent with the diff report:
 Drop any changes the reviewer rejects. Log rejections in the PR report.
 
 ## Step 5: Apply, Commit, and PR
+
+Parse $ARGUMENTS for `--dry-run` and `--category` flags.
 
 If there are approved changes (and not `--dry-run`):
 
