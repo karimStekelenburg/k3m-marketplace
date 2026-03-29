@@ -170,7 +170,7 @@ marketplace itself):
 
 ```markdown
 Read `registry.yaml` from the marketplace root.
-See `docs/cheatsheet-plugin.md` for the complete schema.
+Fetch current plugin docs via `firecrawl scrape` for the schema.
 Check `shared/claude-code-platform/index.yaml`.
 ```
 

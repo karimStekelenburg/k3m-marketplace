@@ -1,7 +1,12 @@
 ---
 name: skill-development
-description: Use when user wants to This skill should be used when the user wants to "create a skill", "add a skill to plugin", "write a new skill", "improve skill description", "organize skill content", or needs guidance on skill structure, progressive disclosure, or skill development best practices for Claude Code plugins.
-version: 0.1.0
+description: >-
+  This skill should be used when the user wants to "create a skill",
+  "add a skill to plugin", "write a new skill", "improve skill description",
+  "organize skill content", "run skill evals", "benchmark skill performance",
+  or needs guidance on skill structure, progressive disclosure, or skill
+  development best practices for Claude Code plugins.
+version: 0.3.0
 ---
 
 # Skill Development for Claude Code Plugins
@@ -324,29 +329,14 @@ cc --plugin-dir /path/to/plugin
 # Verify skill loads correctly
 ```
 
-## Examples from Plugin-Dev
+## Grounding Rule (MANDATORY)
 
-Study the skills in this plugin as examples of best practices:
+Before answering ANY question about Claude Code skill capabilities, syntax, or frontmatter:
 
-**hook-development skill:**
-- Excellent trigger phrases: "create a hook", "add a PreToolUse hook", etc.
-- Lean SKILL.md (1,651 words)
-- 3 references/ files for detailed content
-- 3 examples/ of working hooks
-- 3 scripts/ utilities
-
-**agent-development skill:**
-- Strong triggers: "create an agent", "agent frontmatter", etc.
-- Focused SKILL.md (1,438 words)
-- References include the AI generation prompt from Claude Code
-- Complete agent examples
-
-**plugin-settings skill:**
-- Specific triggers: "plugin settings", ".local.md files", "YAML frontmatter"
-- References show real implementations (multi-agent-swarm, ralph-wiggum)
-- Working parsing scripts
-
-Each demonstrates progressive disclosure and strong triggering.
+1. **Discover doc pages**: Run `firecrawl map https://code.claude.com/docs/en/` to see all available pages (optionally add `--search "skills"` to narrow)
+2. **Fetch the content**: Run `firecrawl scrape <url> -f markdown -o .firecrawl/skills.md` to get the full page
+3. **Read the fetched content**: Use Read tool on the output file, then answer based on what the docs actually say
+4. **Never** answer from memory alone when the question involves what Claude Code supports
 
 ## Progressive Disclosure in Practice
 
@@ -636,20 +626,15 @@ Good for: Complex domains with validation utilities
 
 ## Additional Resources
 
-### Study These Skills
+### Eval Infrastructure
 
-Plugin-dev's skills demonstrate best practices:
-- `../hook-development/` - Progressive disclosure, utilities
-- `../agent-development/` - AI-assisted creation, references
-- `../mcp-integration/` - Comprehensive references
-- `../plugin-settings/` - Real-world examples
-- `../command-development/` - Clear critical concepts
-- `../plugin-structure/` - Good organization
-
-### Reference Files
-
-For complete skill-creator methodology:
-- **`references/skill-creator-original.md`** - Full original skill-creator content
+This skill includes evaluation tools for measuring skill quality:
+- **`scripts/run_eval.py`** — Core eval runner; spawns Claude, detects triggers
+- **`scripts/run_loop.py`** — Iterative eval + improve cycles with train/test split
+- **`scripts/improve_description.py`** — AI-powered description optimization
+- **`scripts/generate_report.py`** — Visual HTML reports of eval results
+- **`eval-viewer/`** — Interactive HTML viewer for detailed eval analysis
+- **`agents/grader.md`** — Evaluates skill outputs against expectations
 
 ## Implementation Workflow
 
