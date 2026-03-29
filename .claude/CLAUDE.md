@@ -1,5 +1,16 @@
 # k3m-marketplace — Marketplace Development Guide
 
+## File Roles and Dependencies
+
+**Read `docs/file-roles-and-dependencies.md` before adding, modifying, or removing any file.**
+
+Key rules:
+- Natural language files (SKILL.md, agents, commands, references) are **code**, not documentation
+- Files in `docs/human/` are human-only — Claude's read access is denied via settings
+- Before removing any file, check if it's referenced by an entry point or another referenced file
+- Use backtick-quoted relative paths when referencing files (see linking conventions in the doc)
+- Commands support `@filename` syntax to include file contents; skills do not
+
 ## Plugin Structure Rules
 
 - Every plugin lives in `plugins/<plugin-name>/`

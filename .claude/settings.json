@@ -1,6 +1,9 @@
 {
   "permissions": {
-    "allow": []
+    "allow": [],
+    "deny": [
+      "Read(docs/human/**)"
+    ]
   },
   "enabledPlugins": {
     "skill-creator@claude-plugins-official": true,
