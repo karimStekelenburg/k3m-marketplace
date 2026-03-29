@@ -1,6 +1,6 @@
 ---
 name: component-development
-description: >-
+description: Use when user wants to This skill should be used when the user asks to "create a slash command", "add a command", "create a hook", "add a PreToolUse/PostToolUse hook", "create an agent", "write a subagent", "add MCP server", "integrate MCP", "configure MCP in plugin", "use .mcp.json", or needs guidance on any plugin component: commands, hooks, agents, MCP servers, or output styles.
   This skill should be used when the user asks to "create a slash command",
   "add a command", "create a hook", "add a PreToolUse/PostToolUse hook",
   "create an agent", "write a subagent", "add MCP server", "integrate MCP",

@@ -1,6 +1,6 @@
 ---
 name: skill-development
-description: >-
+description: Use when user wants to This skill should be used when the user wants to "create a skill", "add a skill to plugin", "write a new skill", "improve skill description", "organize skill content", "run skill evals", "benchmark skill performance", or needs guidance on skill structure, progressive disclosure, or skill development best practices for Claude Code plugins.
   This skill should be used when the user wants to "create a skill",
   "add a skill to plugin", "write a new skill", "improve skill description",
   "organize skill content", "run skill evals", "benchmark skill performance",
