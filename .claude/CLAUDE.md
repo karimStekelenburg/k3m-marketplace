@@ -30,8 +30,7 @@ Key rules:
 
 ## Component Reference
 
-Do NOT rely on bundled documentation or training data for Claude Code capabilities.
-Always fetch current docs before answering capability questions:
+Fetch current docs before answering capability questions instead of relying on bundled documentation or training data:
 
 ```bash
 # Discover all doc pages (bird's eye view)
